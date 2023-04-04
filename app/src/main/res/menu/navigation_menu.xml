@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/homeMenu"
+        android:icon="@drawable/home_selector"
+        android:iconTint="@null"
+        tools:ignore="MenuTitle"
+        />
+    <item
+        android:id="@+id/recordMenu"
+        android:icon="@drawable/record_selector"
+        android:iconTint="@null"
+        tools:ignore="MenuTitle" />
+
+    <item
+        android:id="@+id/runMenu"
+        android:icon="@drawable/run_selector"
+        tools:ignore="MenuTitle"
+        >
+    </item>
+
+    <item
+        android:id="@+id/crewMenu"
+        android:icon="@drawable/crew_selector"
+        android:iconTint="@null"
+        tools:ignore="MenuTitle">
+    </item>
+
+    <item
+        android:id="@+id/imageMenu"
+        android:icon="@drawable/image_selector"
+        android:iconTint="@null"
+        tools:ignore="MenuTitle">
+    </item>
+
+</menu>
