@@ -3,14 +3,11 @@ package kr.ac.kumoh.newrun
 import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
-import android.location.Geocoder
-import android.location.Location
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
-import java.text.DecimalFormat
 import java.util.*
 import kotlin.concurrent.timer
 import kotlin.math.*
@@ -63,7 +60,7 @@ class MyLocationService : Service() {
                     locationCallback,
                     Looper.getMainLooper()
                 )
-                timeRecord = mutableListOf<TimeRecordData>()
+                timeRecord = mutableListOf()
                 timeRecord.add(TimeRecordData(0,MyLocation.myLatitude!!, MyLocation.myLongitude!!))
                 timeCheckStart()
             }
@@ -94,7 +91,7 @@ class MyLocationService : Service() {
         }
     }
 
-    fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+    private fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         val dLat = Math.toRadians(lat2 - lat1)
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
@@ -107,7 +104,7 @@ class MyLocationService : Service() {
         override fun onLocationResult(locationResult: LocationResult) {
             locationResult.lastLocation.apply {
                 MyLocation.myLatitude = this!!.latitude
-                MyLocation.myLongitude = this!!.longitude
+                MyLocation.myLongitude = this.longitude
                 val intent = Intent(ACTION_LOCATION_UPDATE).apply {
                     putExtra(LOCATION_DATA_INFO, true)
                 }
