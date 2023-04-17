@@ -25,6 +25,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.helper.widget.Layer
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.maps.*
@@ -147,13 +148,12 @@ class RunFragment : Fragment(), OnMapReadyCallback {
             } else{
                 requireActivity().runOnUiThread {countDownTextView.text = currentCount.toString()}
                 animateText()
-
             }
-            if(currentCount <=3){
-                val toneType = if(currentCount ==0) ToneGenerator.TONE_CDMA_HIGH_L else ToneGenerator.TONE_CDMA_ANSWER
-                ToneGenerator(AudioManager.STREAM_ALARM, 40)
-                    .startTone(toneType, 100)
-            }
+//            if(currentCount <=3){
+//                val toneType = if(currentCount ==0) ToneGenerator.TONE_CDMA_HIGH_L else ToneGenerator.TONE_CDMA_ANSWER
+//                ToneGenerator(AudioManager.STREAM_ALARM, 40)
+//                    .startTone(toneType, 100)
+//            }
         }
         Log.d("테스트", "타이머 끝")
     }

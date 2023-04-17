@@ -9,10 +9,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import kr.ac.kumoh.newrun.databinding.ActivityRunDataBinding
 
 
@@ -68,7 +65,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         updateLocation()
     }
 
-    fun updateLocation() {
+    private fun updateLocation() {
 
         val bigPictureBitmap = BitmapFactory.decodeResource(resources, R.drawable.marker)
 
@@ -85,5 +82,20 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
                 .zIndex(2f)
         )
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        drawRoute()
+    }
+
+    private fun drawRoute(){
+        val polylineOptions = PolylineOptions()
+        for(point in )
+        val polyline = mMap.addPolyline(
+            PolylineOptions()
+            .add(
+                LatLng(-35.016, 143.321),
+                LatLng(-34.747, 145.592),
+                LatLng(-34.364, 147.891),
+                LatLng(-33.501, 150.217),
+                LatLng(-32.306, 149.248),
+                LatLng(-32.491, 147.309)))
     }
 }
