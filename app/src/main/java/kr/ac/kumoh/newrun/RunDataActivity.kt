@@ -1,5 +1,6 @@
 package kr.ac.kumoh.newrun
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
@@ -11,6 +12,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kr.ac.kumoh.newrun.databinding.ActivityRunDataBinding
+import java.sql.Time
 
 
 class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -19,8 +21,10 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
     private var time: Int? = null
     private var velocity: Double? = null
     private var distance: Double? = null
+    private var timeRecord: Array<TimeRecordData>? = null
     private lateinit var mMap: GoogleMap
 
+    @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRunDataBinding.inflate(layoutInflater)
@@ -29,6 +33,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         time = intent.getIntExtra(TIME_DATA_INFO, -1)
         velocity = intent.getDoubleExtra(VELOCITY_DATA_INFO, -1.0)
         distance = intent.getDoubleExtra(DISTANCE_DATA_INFO, -1.0)
+        timeRecord = intent.getParcelableArrayExtra(TIME_RECORD, TimeRecordData::class.java)
 
         binding.kmValueTextView.text = distance.toString()
         binding.velocityValueTextView.text = String.format("%.2f",velocity)
@@ -37,6 +42,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.stopButton.setOnClickListener {
             val intent = Intent(this, MyLocationService::class.java).apply{action = LOCATION_STOP}
             startService(intent)
+            RunActivity.activity?.finish()
             binding.playButton.visibility = View.GONE
             binding.stopButton.visibility = View.GONE
             binding.shareButton.visibility = View.VISIBLE
@@ -54,11 +60,6 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
     }
 
-    override fun onStop() {
-        super.onStop()
-        val intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
-    }
 
     override fun onMapReady(p0: GoogleMap) {
         mMap = p0
@@ -87,15 +88,11 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun drawRoute(){
         val polylineOptions = PolylineOptions()
-        for(point in )
-        val polyline = mMap.addPolyline(
-            PolylineOptions()
-            .add(
-                LatLng(-35.016, 143.321),
-                LatLng(-34.747, 145.592),
-                LatLng(-34.364, 147.891),
-                LatLng(-33.501, 150.217),
-                LatLng(-32.306, 149.248),
-                LatLng(-32.491, 147.309)))
+        for(point in timeRecord!!){
+            polylineOptions.add(LatLng(point.latitude, point.longitude))
+        }
+        val polyline = mMap.addPolyline(polylineOptions)
+        polyline.width = 20.0f
+        polyline.color = R.color.main_color
     }
 }
