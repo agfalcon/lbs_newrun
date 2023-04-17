@@ -1,6 +1,5 @@
 package kr.ac.kumoh.newrun
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kr.ac.kumoh.newrun.databinding.ActivityHomeBinding

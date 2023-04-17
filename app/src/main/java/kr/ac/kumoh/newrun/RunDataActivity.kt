@@ -12,7 +12,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import kr.ac.kumoh.newrun.databinding.ActivityRunDataBinding
-import java.sql.Time
 
 
 class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -55,7 +54,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         startMap()
     }
 
-    fun startMap() {
+    private fun startMap() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.runMap) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
@@ -70,10 +69,10 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val bigPictureBitmap = BitmapFactory.decodeResource(resources, R.drawable.marker)
 
-        val LATLNG = LatLng(MyLocation.myLatitude!!, MyLocation.myLongitude!!)
+        val latLng = LatLng(MyLocation.myLatitude!!, MyLocation.myLongitude!!)
 
         val cameraPosition = CameraPosition.Builder()
-            .target(LATLNG)
+            .target(latLng)
             .zoom(15.0f)
             .build()
         mMap.clear()
@@ -95,4 +94,5 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         polyline.width = 20.0f
         polyline.color = R.color.main_color
     }
+
 }
