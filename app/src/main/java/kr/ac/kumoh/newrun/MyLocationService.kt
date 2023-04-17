@@ -88,7 +88,7 @@ class MyLocationService : Service() {
                 putExtra(TIME_DATA_INFO, time)
                 putExtra(DISTANCE_DATA_INFO, distance)
                 putExtra(VELOCITY_DATA_INFO, velocity)
-                putExtra(TIME_RECORD, timeRecord)
+                putExtra(TIME_RECORD, timeRecord.toTypedArray())
             }
             sendBroadcast(intent)
         }
