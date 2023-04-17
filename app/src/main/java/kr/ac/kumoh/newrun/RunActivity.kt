@@ -1,0 +1,77 @@
+package kr.ac.kumoh.newrun
+
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.BitmapFactory
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import kr.ac.kumoh.newrun.databinding.ActivityRunBinding
+
+class RunActivity : AppCompatActivity() {
+
+    private val runDataReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            Log.d("테스트", "receive 완료")
+            val time = intent.getIntExtra(TIME_DATA_INFO, -1)
+            val distance = intent.getDoubleExtra(DISTANCE_DATA_INFO, -1.0)
+            val velocity = intent.getDoubleExtra(VELOCITY_DATA_INFO, -1.0)
+            if(time==-1 || distance == -1.0 || velocity == -1.0) return
+            binding.kmValueTextView.text = distance.toString()
+            binding.velocityValueTextView.text = String.format("%.2f",velocity)
+            binding.timeValueTextView.text = String.format("%02d:%02d", time/60, time%60)
+        }
+    }
+
+    private lateinit var binding: ActivityRunBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityRunBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.pauseButton.setOnClickListener {
+            pauseRunning()
+        }
+    }
+
+    override fun onResume() {
+        Log.d("테스트", "receiver 등록")
+        val filter = IntentFilter(ACTION_RUN_UPDATE)
+        registerReceiver(runDataReceiver, filter)
+
+        val intent = Intent(this, MyLocationService::class.java)
+            .apply{ action = RUN_START }
+        startService(intent)
+        super.onResume()
+    }
+
+    override fun onPause() {
+        unregisterReceiver(runDataReceiver)
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val intent = Intent(this, MyLocationService::class.java)
+            .apply{ action = LOCATION_STOP }
+        startService(intent)
+    }
+
+    private fun pauseRunning(){
+        val intent = Intent(this, MyLocationService::class.java).apply{action = RUN_PAUSE}
+        startService(intent)
+        val runDataIntent = Intent(this, RunDataActivity::class.java).apply{
+            val time = binding.timeValueTextView.text.toString().substring(0,2).toInt()*60 + binding.timeValueTextView.text.toString().substring(3,5).toInt()
+            putExtra(TIME_DATA_INFO, time)
+            putExtra(VELOCITY_DATA_INFO, binding.velocityValueTextView.text.toString().toDouble())
+            putExtra(DISTANCE_DATA_INFO, binding.kmValueTextView.text.toString().toDouble())
+        }
+        startActivity(runDataIntent)
+    }
+}

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_color"
+    tools:context=".RunDataActivity">
+
+
+    <fragment
+        android:id="@+id/runMap"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/timeValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        app:layout_constraintVertical_bias="0.6"
+        android:text="00:00"
+        android:textColor="@color/white"
+        android:textSize="42sp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/velocityValueTextView"
+        app:layout_constraintTop_toBottomOf="@id/runMap"
+        />
+
+    <TextView
+        android:id="@+id/velocityValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        android:text="00.00"
+        android:textColor="@color/white"
+        android:textSize="42sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/timeValueTextView"
+        app:layout_constraintTop_toTopOf="@id/timeValueTextView" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        android:text="시간"
+        android:textColor="@color/trans_light_gray"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/timeValueTextView"
+        app:layout_constraintEnd_toEndOf="@id/timeValueTextView"
+        app:layout_constraintTop_toBottomOf="@id/timeValueTextView"
+        />
+
+    <TextView
+        android:id="@+id/velocityTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        android:text="km/h"
+        android:textColor="@color/trans_light_gray"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="@id/velocityValueTextView"
+        app:layout_constraintEnd_toEndOf="@id/velocityValueTextView"
+        app:layout_constraintTop_toBottomOf="@id/velocityValueTextView"
+        />
+
+    <TextView
+        android:id="@+id/kmValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/spoqa_bold"
+        tools:text="0.00"
+        android:textColor="@color/white"
+        android:textSize="42sp"
+        app:layout_constraintTop_toBottomOf="@id/timeTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/calorieValueTextView"
+         />
+
+    <TextView
+        android:id="@+id/calorieValueTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        tools:text="000"
+        android:textColor="@color/white"
+        android:textSize="42sp"
+        app:layout_constraintTop_toTopOf="@id/kmValueTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/kmValueTextView"
+        />
+
+    <TextView
+        android:id="@+id/kmTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        android:text="킬로미터"
+        android:textColor="@color/trans_light_gray"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/kmValueTextView"
+        app:layout_constraintStart_toStartOf="@+id/kmValueTextView"
+        app:layout_constraintTop_toBottomOf="@+id/kmValueTextView" />
+
+
+    <TextView
+        android:id="@+id/calorieTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_bold"
+        android:text="칼로리"
+        android:textColor="@color/trans_light_gray"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/calorieValueTextView"
+        app:layout_constraintStart_toStartOf="@+id/calorieValueTextView"
+        app:layout_constraintTop_toBottomOf="@+id/calorieValueTextView" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/stopButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/playButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/kmTextView"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/ic_baseline_stop_50"
+        app:fabCustomSize="100dp"
+        app:maxImageSize="50dp"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/playButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintStart_toEndOf="@id/stopButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/stopButton"
+        android:backgroundTint="@color/black"
+        android:src="@drawable/ic_baseline_play_arrow_50"
+        app:fabCustomSize="100dp"
+        app:maxImageSize="50dp"
+        />
+
+    <Button
+        android:id="@+id/shareButton"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="러닝 공유하기"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/spoqa_medium"
+        android:visibility="gone"
+        />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
