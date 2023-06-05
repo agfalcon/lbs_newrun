@@ -13,9 +13,8 @@ class HomeActivity : AppCompatActivity() {
 
         initNavigationBar()
     }
-
     private fun initNavigationBar(){
-        binding.navigationView.setOnItemSelectedListener { item ->
+        binding.navigationView.setOnItemSelectedListener {item ->
             when(item.itemId){
                 R.id.homeMenu -> {
                     supportFragmentManager.beginTransaction()
