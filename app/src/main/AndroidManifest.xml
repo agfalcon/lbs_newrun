@@ -20,6 +20,12 @@
         android:theme="@style/Theme.NewRun"
         tools:targetApi="31">
         <activity
+            android:name=".SignUpPwActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpIDActivity"
+            android:exported="false" />
+        <activity
             android:name=".RunDataActivity"
             android:exported="false">
             <meta-data
@@ -67,7 +73,6 @@
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
-
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

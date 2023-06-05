@@ -57,6 +57,12 @@ class LoginActivity : AppCompatActivity() {
 
         // 파이어베이스 초기화
         auth = Firebase.auth
+
+        //<-------------------자체 회원가입 로직---------------------
+        binding.btnsignup.setOnClickListener {
+            val intent = Intent(this@LoginActivity, SignUpIDActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun kakaoSingOut() {
