@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+/<---신근재--->
+/app/google-services.json
+/.idea/.name
+/app/src/main/res/values/strings.xml
