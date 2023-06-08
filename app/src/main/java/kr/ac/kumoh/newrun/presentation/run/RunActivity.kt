@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation.run
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
@@ -8,7 +8,17 @@ import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import kr.ac.kumoh.newrun.domain.data.ACTION_RUN_UPDATE
+import kr.ac.kumoh.newrun.domain.data.DISTANCE_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.LOCATION_STOP
+import kr.ac.kumoh.newrun.domain.data.RUN_PAUSE
+import kr.ac.kumoh.newrun.domain.data.RUN_START
+import kr.ac.kumoh.newrun.domain.data.TIME_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.TIME_RECORD
+import kr.ac.kumoh.newrun.domain.model.TimeRecordData
+import kr.ac.kumoh.newrun.domain.data.VELOCITY_DATA_INFO
 import kr.ac.kumoh.newrun.databinding.ActivityRunBinding
+import kr.ac.kumoh.newrun.service.MyLocationService
 
 class RunActivity : AppCompatActivity() {
 
@@ -65,7 +75,7 @@ class RunActivity : AppCompatActivity() {
     }
 
     private fun pauseRunning(){
-        val intent = Intent(this, MyLocationService::class.java).apply{action = RUN_PAUSE}
+        val intent = Intent(this, MyLocationService::class.java).apply{action = RUN_PAUSE }
         startService(intent)
         val runDataIntent = Intent(this, RunDataActivity::class.java).apply{
             val time = binding.timeValueTextView.text.toString().substring(0,2).toInt()*60 + binding.timeValueTextView.text.toString().substring(3,5).toInt()

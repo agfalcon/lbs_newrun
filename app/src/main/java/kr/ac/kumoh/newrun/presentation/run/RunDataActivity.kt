@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation.run
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,7 +11,16 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import kr.ac.kumoh.newrun.domain.data.DISTANCE_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.LOCATION_STOP
+import kr.ac.kumoh.newrun.domain.data.MyLocation
+import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.domain.data.TIME_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.TIME_RECORD
+import kr.ac.kumoh.newrun.domain.model.TimeRecordData
+import kr.ac.kumoh.newrun.domain.data.VELOCITY_DATA_INFO
 import kr.ac.kumoh.newrun.databinding.ActivityRunDataBinding
+import kr.ac.kumoh.newrun.service.MyLocationService
 
 
 class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -39,7 +48,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.timeValueTextView.text = String.format("%02d:%02d", time!!/60, time!!%60)
 
         binding.stopButton.setOnClickListener {
-            val intent = Intent(this, MyLocationService::class.java).apply{action = LOCATION_STOP}
+            val intent = Intent(this, MyLocationService::class.java).apply{action = LOCATION_STOP }
             startService(intent)
             RunActivity.activity?.finish()
             binding.playButton.visibility = View.GONE

@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.service
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -8,6 +8,19 @@ import android.os.Looper
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
+import kr.ac.kumoh.newrun.domain.data.ACTION_LOCATION_UPDATE
+import kr.ac.kumoh.newrun.domain.data.ACTION_RUN_UPDATE
+import kr.ac.kumoh.newrun.domain.data.DISTANCE_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.LOCATION_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.LOCATION_START
+import kr.ac.kumoh.newrun.domain.data.LOCATION_STOP
+import kr.ac.kumoh.newrun.domain.data.MyLocation
+import kr.ac.kumoh.newrun.domain.data.RUN_PAUSE
+import kr.ac.kumoh.newrun.domain.data.RUN_START
+import kr.ac.kumoh.newrun.domain.data.TIME_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.TIME_RECORD
+import kr.ac.kumoh.newrun.domain.model.TimeRecordData
+import kr.ac.kumoh.newrun.domain.data.VELOCITY_DATA_INFO
 import java.util.*
 import kotlin.concurrent.timer
 import kotlin.math.*
@@ -61,7 +74,7 @@ class MyLocationService : Service() {
                     Looper.getMainLooper()
                 )
                 timeRecord = mutableListOf()
-                timeRecord.add(TimeRecordData(0,MyLocation.myLatitude!!, MyLocation.myLongitude!!))
+                timeRecord.add(TimeRecordData(0, MyLocation.myLatitude!!, MyLocation.myLongitude!!))
                 timeCheckStart()
             }
             RUN_PAUSE -> {

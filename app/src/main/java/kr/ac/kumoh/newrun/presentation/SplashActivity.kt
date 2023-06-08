@@ -1,10 +1,11 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import kr.ac.kumoh.newrun.R
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

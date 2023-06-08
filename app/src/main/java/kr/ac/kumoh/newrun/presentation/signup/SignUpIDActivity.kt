@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation.signup
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
