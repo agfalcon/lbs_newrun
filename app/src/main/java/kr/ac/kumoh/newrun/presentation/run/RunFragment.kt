@@ -73,6 +73,7 @@ class RunFragment : Fragment(), OnMapReadyCallback {
                             .zIndex(2f)
                     )
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(myMarker!!.position, 16f))
+                    startButton.isClickable = true
                 }
                 else{
                     myMarker?.position = LatLng(MyLocation.myLatitude!!, MyLocation.myLongitude!!)
@@ -129,6 +130,7 @@ class RunFragment : Fragment(), OnMapReadyCallback {
             timerValueTextView = findViewById(R.id.timerValueTextView)
             countDownTextView = findViewById(R.id.countDownTextView)
         }
+        startButton.isClickable = false
         timerLayer.setOnClickListener {
             showCountDownSettingDialog()
         }
