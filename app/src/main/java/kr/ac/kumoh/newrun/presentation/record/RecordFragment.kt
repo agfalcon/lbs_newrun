@@ -10,6 +10,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
@@ -21,6 +23,8 @@ import com.kizitonwose.calendar.view.WeekCalendarView
 import com.kizitonwose.calendar.view.WeekDayBinder
 import com.kizitonwose.calendar.view.WeekHeaderFooterBinder
 import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.domain.model.LatLng
+import kr.ac.kumoh.newrun.domain.model.RecordListItem
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -31,8 +35,17 @@ import java.util.Locale
 
 class RecordFragment : Fragment() {
 
+    val recordItems = listOf(
+        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
+        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
+        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
+        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
+        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
+        )
+
     private lateinit var calendarView: WeekCalendarView
     private lateinit var monthTextView: TextView
+    private lateinit var recordList: RecyclerView
     val emoticonResource = listOf(R.drawable.smile_emo, R.drawable.amaizing_emo, R.drawable.angry_emo);
 
 
@@ -44,6 +57,11 @@ class RecordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         monthTextView = view.findViewById(R.id.monthTextView)
+        recordList = view.findViewById(R.id.recordList)
+        val recordAdapter = RecordListAdapter(recordItems)
+        recordAdapter.notifyDataSetChanged()
+        recordList.adapter = recordAdapter
+        recordList.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
         setCalender(view)
     }
 
