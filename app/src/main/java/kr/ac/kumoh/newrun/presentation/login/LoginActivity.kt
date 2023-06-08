@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation.login
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -22,7 +22,10 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
+import kr.ac.kumoh.newrun.presentation.HomeActivity
+import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
+import kr.ac.kumoh.newrun.presentation.signup.SignUpIDActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth//파이어베이스 객체 가져오기
@@ -41,7 +44,9 @@ class LoginActivity : AppCompatActivity() {
         //<-------------------네이버 로그인 로직--------------------->
         //네이버아이디 객체 초기화
         //initialize(context: Context, clientId: String, clientSecret: String, clientName: String)
-        NaverIdLoginSDK.initialize(this@LoginActivity, getString(R.string.naver_client_id), getString(R.string.naver_client_secret), "테스트중이에요")
+        NaverIdLoginSDK.initialize(this@LoginActivity, getString(R.string.naver_client_id), getString(
+            R.string.naver_client_secret
+        ), "테스트중이에요")
         binding.btnNaver.setOnClickListener {startNaverLogin() }
         binding.btnNaverlogout.setOnClickListener { startNaverLogout() }
 

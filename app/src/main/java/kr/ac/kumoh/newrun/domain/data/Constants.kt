@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.domain.data
 
 const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
 const val LOCATION_START = "gpsStart"

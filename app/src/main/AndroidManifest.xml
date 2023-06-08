@@ -20,20 +20,20 @@
         android:theme="@style/Theme.NewRun"
         tools:targetApi="31">
         <activity
-            android:name=".SignUpPwActivity"
+            android:name=".presentation.signup.SignUpPwActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpIDActivity"
+            android:name=".presentation.signup.SignUpIDActivity"
             android:exported="false" />
         <activity
-            android:name=".RunDataActivity"
+            android:name=".presentation.run.RunDataActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".RunActivity"
+            android:name=".presentation.run.RunActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -41,7 +41,7 @@
         </activity>
 
         <service
-            android:name=".MyLocationService"
+            android:name=".service.MyLocationService"
             android:enabled="true"
             android:exported="true" />
 
@@ -50,14 +50,14 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".HomeActivity"
+            android:name=".presentation.HomeActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".presentation.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,7 +70,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".SplashActivity"
+            android:name=".presentation.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme">
             <meta-data

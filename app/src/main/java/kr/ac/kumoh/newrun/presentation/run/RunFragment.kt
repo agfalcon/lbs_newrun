@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation.run
 
 import android.animation.Animator
 import android.annotation.SuppressLint
@@ -30,7 +30,15 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kr.ac.kumoh.newrun.domain.data.ACTION_LOCATION_UPDATE
+import kr.ac.kumoh.newrun.domain.data.LOCATION_DATA_INFO
+import kr.ac.kumoh.newrun.domain.data.LOCATION_START
+import kr.ac.kumoh.newrun.domain.data.LOCATION_STOP
+import kr.ac.kumoh.newrun.domain.data.MyLocation
+import kr.ac.kumoh.newrun.domain.data.PERMISSIONS_REQUEST_ACCESS_LOCATION
+import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.databinding.DialogCountdownSettingBinding
+import kr.ac.kumoh.newrun.service.MyLocationService
 import java.util.*
 import kotlin.concurrent.timer
 import kotlin.math.hypot
@@ -55,7 +63,9 @@ class RunFragment : Fragment(), OnMapReadyCallback {
             val location = intent.getBooleanExtra(LOCATION_DATA_INFO, false)
             if (location) {
                 if(myMarker == null){
-                    val bigPictureBitmap = BitmapFactory.decodeResource(resources, R.drawable.marker)
+                    val bigPictureBitmap = BitmapFactory.decodeResource(resources,
+                        R.drawable.marker
+                    )
                     myMarker = googleMap.addMarker(
                         MarkerOptions().icon(BitmapDescriptorFactory.fromBitmap(bigPictureBitmap))
                             .position(LatLng(MyLocation.myLatitude!!, MyLocation.myLongitude!!))
@@ -76,7 +86,9 @@ class RunFragment : Fragment(), OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        LocalBroadcastManager.getInstance(activity!!).registerReceiver(locationReceiver, IntentFilter(ACTION_LOCATION_UPDATE))
+        LocalBroadcastManager.getInstance(activity!!).registerReceiver(locationReceiver, IntentFilter(
+            ACTION_LOCATION_UPDATE
+        ))
         getLocationPermission()
 
         return  setFragment(inflater, container, savedInstanceState)

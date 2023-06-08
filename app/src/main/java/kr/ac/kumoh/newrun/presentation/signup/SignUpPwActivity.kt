@@ -1,4 +1,4 @@
-package kr.ac.kumoh.newrun
+package kr.ac.kumoh.newrun.presentation.signup
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import kr.ac.kumoh.newrun.presentation.HomeActivity
+import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.databinding.ActivitySignUpPwBinding
 
 class SignUpPwActivity : AppCompatActivity() {
