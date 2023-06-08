@@ -15,6 +15,7 @@ import kr.ac.kumoh.newrun.domain.data.RankData
 class HomeFragment : Fragment() {
     private lateinit var goalProgressBar: ProgressBar
     private lateinit var rankListView: ListView
+    private lateinit var rankAdapter: RankAdapter
 
     val rankData = listOf(
         RankData(1, "존잘용구", 31.2),
@@ -27,7 +28,6 @@ class HomeFragment : Fragment() {
         RankData(8, "거 참 뛰기 좋은 날이네", 15.1),
         RankData(9, "구미시 이봉주", 12.3),
         RankData(10, "다나카", 11.1),
-
         )
 
     override fun onCreateView(
@@ -51,19 +51,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun setUpRankListView() {
-
-        // Set the progress value (0-100)
-        goalProgressBar.progress = 30
+        rankAdapter = RankAdapter(requireActivity(), rankData)
+        rankListView.adapter = rankAdapter
     }
 
     private fun setUpGoalProgressBar() {
-        val items = mutableListOf<String>()
-        for (i in 1..10) {
-            items.add("Item $i")
-        }
-
-        val adapter = ArrayAdapter(requireActivity(), android.R.layout.simple_list_item_1, items)
-        rankListView.adapter = adapter
+        // Set the progress value (0-100)
+        goalProgressBar.progress = 30
     }
 
 }
