@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">NewRun</string>
     <!-- TODO: Remove or change this placeholder text -->
+    //네이버 로그인 관련 클라이언트 키
+    <string name="naver_client_id">vQCLNfh_AonecEca7twX</string>
+    <string name="naver_client_secret">hbOUnL6Izn</string>
+    //카카오 로그인 네이티브 키
+    <string name="kakao_key">7838470033314dc8a86154ed9641a155</string>
+
+    //구글 로그인을 위한 클라이언트 키
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

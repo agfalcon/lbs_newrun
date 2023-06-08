@@ -3,11 +3,182 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment"
+    android:background="@color/main_color"
+    >
+    
+    <TextView
+        android:id="@+id/exerciseOfWeekTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="18dp"
+        android:text="이주의 운동"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_bold"
+        android:textSize="32sp"
+        />
 
     <TextView
+        android:id="@+id/recodeOfWeekTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/exerciseOfWeekTextView"
+        app:layout_constraintStart_toStartOf="@id/exerciseOfWeekTextView"
+        android:text="3.07"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_bold"
+        android:textSize="48sp"
+        />
+
+    <TextView
+        android:id="@+id/recodeOfWeekUnitTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/recodeOfWeekTextView"
+        app:layout_constraintStart_toEndOf="@id/recodeOfWeekTextView"
+        android:text="km"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_regualar"
+        android:textSize="32sp"
+        android:layout_marginStart="12dp"
+        />
+
+    <TextView
+        android:id="@+id/calorieOfWeekTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/recodeOfWeekTextView"
+        app:layout_constraintStart_toStartOf="@id/exerciseOfWeekTextView"
+        android:text="88"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_bold"
+        android:textSize="24sp"
+        />
+
+    <TextView
+        android:id="@+id/calorieOfWeekUnitTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/calorieOfWeekTextView"
+        app:layout_constraintStart_toEndOf="@id/calorieOfWeekTextView"
+        android:text="kcal"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_regualar"
+        android:textSize="16sp"
+        android:layout_marginStart="6dp"
+        />
+
+    <ImageView
+        android:id="@+id/calorieImageView"
+        android:layout_width="34dp"
+        android:layout_height="35dp"
+        app:layout_aspectRatio="100%"
+        app:layout_constraintTop_toTopOf="@id/calorieOfWeekTextView"
+        app:layout_constraintBottom_toBottomOf="@id/calorieOfWeekTextView"
+        app:layout_constraintStart_toEndOf="@id/calorieOfWeekUnitTextView"
+        android:src="@drawable/fire_icon"
+        />
+
+    <TextView
+        android:id="@+id/velocityOfWeekTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/calorieOfWeekTextView"
+        app:layout_constraintStart_toEndOf="@id/calorieImageView"
+        android:text="9.7"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_bold"
+        android:textSize="24sp"
+        android:layout_marginStart="32dp"
+        />
+
+    <TextView
+        android:id="@+id/velocityOfWeekUnitTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBaseline_toBaselineOf="@id/velocityOfWeekTextView"
+        app:layout_constraintStart_toEndOf="@id/velocityOfWeekTextView"
+        android:text="km/h"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_regualar"
+        android:textSize="16sp"
+        android:layout_marginStart="6dp"
+        />
+
+    <ImageView
+        android:id="@+id/velocityImageView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        app:layout_aspectRatio="100%"
+        app:layout_constraintTop_toTopOf="@id/velocityOfWeekTextView"
+        app:layout_constraintBottom_toBottomOf="@id/velocityOfWeekTextView"
+        app:layout_constraintStart_toEndOf="@id/velocityOfWeekUnitTextView"
+        android:src="@drawable/running_icon"
+        android:layout_marginStart="6dp"
+        />
+
+    <TextView
+        android:id="@+id/goalTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/calorieOfWeekTextView"
+        app:layout_constraintStart_toStartOf="@id/exerciseOfWeekTextView"
+        android:text="목표달성!"
+        android:textColor="@color/white"
+        android:fontFamily="@font/spoqa_bold"
+        android:textSize="22sp"
+        />
+    
+    <ProgressBar
+        android:layout_width="0dp"
+        android:layout_height="18dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintStart_toStartOf="@id/exerciseOfWeekTextView"
+        app:layout_constraintTop_toBottomOf="@id/goalTextView"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progressDrawable="@drawable/progressbar"
+        android:layout_marginTop="6dp"
+        android:progress="31"
+        />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="home" />
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.67"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/top_radius_box"
+        >
+
+        <TextView
+            android:id="@+id/rankOfWeekTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:text="이주의 랭킹"
+            android:textColor="@color/black"
+            android:fontFamily="@font/spoqa_bold"
+            android:textSize="24sp"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="18dp"
+            />
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/rankOfWeekTextView"
+            app:layout_constraintStart_toStartOf="@id/rankOfWeekTextView"
+            android:layout_marginTop="12dp"
+            android:elevation="-10dp"
+            android:background="@drawable/border_radius_box"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
