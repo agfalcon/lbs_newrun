@@ -255,6 +255,11 @@ class RunFragment : Fragment(), OnMapReadyCallback {
     override fun onStop() {
         super.onStop()
         mMap.onStop()
+        LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(
+            locationReceiver, IntentFilter(ACTION_LOCATION_UPDATE))
+        val intent = Intent(activity, MyLocationService::class.java)
+            .apply{ action = LOCATION_STOP }
+        requireActivity().startService(intent)
     }
 
     override fun onResume() {
@@ -276,10 +281,6 @@ class RunFragment : Fragment(), OnMapReadyCallback {
     override fun onDestroy() {
         super.onDestroy()
         mMap.onDestroy()
-        LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(
-            locationReceiver, IntentFilter(ACTION_LOCATION_UPDATE))
-        val intent = Intent(activity, MyLocationService::class.java)
-            .apply{ action = LOCATION_STOP }
-        requireActivity().startService(intent)
+
     }
 }
