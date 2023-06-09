@@ -1,10 +1,12 @@
 package kr.ac.kumoh.newrun.presentation.record
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -22,9 +24,19 @@ import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekCalendarView
 import com.kizitonwose.calendar.view.WeekDayBinder
 import com.kizitonwose.calendar.view.WeekHeaderFooterBinder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.data.model.MyRecord
+import kr.ac.kumoh.newrun.data.model.RecordRequest
+import kr.ac.kumoh.newrun.data.repository.MyRecordService
+import kr.ac.kumoh.newrun.data.repository.RecordRunningService
+import kr.ac.kumoh.newrun.data.repository.StableDiffusionService
+import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.domain.model.LatLng
 import kr.ac.kumoh.newrun.domain.model.RecordListItem
+import java.lang.Math.round
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
@@ -43,10 +55,17 @@ class RecordFragment : Fragment() {
         RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
         )
 
+    private lateinit var myRecord : MyRecord
+    var selectedMode = 1
+
     private lateinit var calendarView: WeekCalendarView
     private lateinit var monthTextView: TextView
     private lateinit var recordList: RecyclerView
-    val emoticonResource = listOf(R.drawable.smile_emo, R.drawable.amaizing_emo, R.drawable.angry_emo);
+    private lateinit var recordTextView: TextView
+    private lateinit var totalButton: Button
+    private lateinit var weekButton: Button
+    private lateinit var monthButton: Button
+    val emoticonResource = listOf(R.drawable.smile_emo, R.drawable.amaizing_emo, R.drawable.angry_emo)
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,11 +77,65 @@ class RecordFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         monthTextView = view.findViewById(R.id.monthTextView)
         recordList = view.findViewById(R.id.recordList)
+        recordTextView = view.findViewById(R.id.recordTextView)
+        totalButton = view.findViewById(R.id.totalButton)
+        weekButton = view.findViewById(R.id.weekButton)
+        monthButton = view.findViewById(R.id.monthButton)
         val recordAdapter = RecordListAdapter(recordItems)
         recordAdapter.notifyDataSetChanged()
         recordList.adapter = recordAdapter
         recordList.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
         setCalender(view)
+        getMyRecord()
+        totalButton.setOnClickListener {
+            selectedMode = 1
+            totalButton.setTextColor(resources.getColor(R.color.white))
+            totalButton.setBackgroundColor(resources.getColor(R.color.main_color))
+            weekButton.setTextColor(resources.getColor(R.color.black))
+            weekButton.setBackgroundColor(resources.getColor(R.color.white))
+            monthButton.setTextColor(resources.getColor(R.color.black))
+            monthButton.setBackgroundColor(resources.getColor(R.color.white))
+            if(myRecord == null) recordTextView.text = "기록없음"
+            else recordTextView.text = (round(myRecord.totalDistance*100)/100.0).toString()
+        }
+
+        weekButton.setOnClickListener {
+            selectedMode = 2
+            totalButton.setTextColor(resources.getColor(R.color.black))
+            totalButton.setBackgroundColor(resources.getColor(R.color.white))
+            weekButton.setTextColor(resources.getColor(R.color.white))
+            weekButton.setBackgroundColor(resources.getColor(R.color.main_color))
+            monthButton.setTextColor(resources.getColor(R.color.black))
+            monthButton.setBackgroundColor(resources.getColor(R.color.white))
+            if(myRecord == null) recordTextView.text = "기록없음"
+            else recordTextView.text = (round(myRecord.weeklyDistance*100)/100.0).toString()
+        }
+
+        monthButton.setOnClickListener {
+            selectedMode = 3
+            totalButton.setTextColor(resources.getColor(R.color.black))
+            totalButton.setBackgroundColor(resources.getColor(R.color.white))
+            monthButton.setTextColor(resources.getColor(R.color.white))
+            monthButton.setBackgroundColor(resources.getColor(R.color.main_color))
+            weekButton.setTextColor(resources.getColor(R.color.black))
+            weekButton.setBackgroundColor(resources.getColor(R.color.white))
+            if(myRecord == null) recordTextView.text = "기록없음"
+            else recordTextView.text = (round(myRecord.monthlyDistance*100)/100.0).toString()
+        }
+
+    }
+
+    private fun getMyRecord() {
+        CoroutineScope(Dispatchers.IO).launch {
+            myRecord = MyRecordService().getMyRecord(UserInfo.id.toString())
+            CoroutineScope(Dispatchers.Main).launch {
+                when(selectedMode){
+                    1 -> recordTextView.text = (round(myRecord.totalDistance*100)/100.0).toString()
+                    2 -> recordTextView.text =(round(myRecord.weeklyDistance*100)/100.0).toString()
+                    3 -> recordTextView.text = (round(myRecord.monthlyDistance*100)/100.0).toString()
+                }
+            }
+        }
     }
 
     private fun setCalender(view: View){

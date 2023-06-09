@@ -18,6 +18,7 @@
         android:roundIcon="@drawable/logo1"
         android:supportsRtl="true"
         android:theme="@style/Theme.NewRun"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".presentation.signup.SignUpPwActivity"
@@ -51,19 +52,20 @@
 
         <activity
             android:name=".presentation.HomeActivity"
-            android:exported="false">
+            android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
-        <activity
-            android:name=".presentation.login.LoginActivity"
-            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".presentation.login.LoginActivity"
+            android:exported="true">
+
 
             <meta-data
                 android:name="android.app.lib_name"
