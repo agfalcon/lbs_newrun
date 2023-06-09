@@ -49,7 +49,6 @@ class RunActivity : AppCompatActivity() {
         binding.pauseButton.setOnClickListener {
             pauseRunning()
         }
-        binding.
     }
 
     override fun onResume() {
