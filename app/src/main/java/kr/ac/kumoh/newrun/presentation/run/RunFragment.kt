@@ -38,6 +38,7 @@ import kr.ac.kumoh.newrun.domain.data.MyLocation
 import kr.ac.kumoh.newrun.domain.data.PERMISSIONS_REQUEST_ACCESS_LOCATION
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.databinding.DialogCountdownSettingBinding
+import kr.ac.kumoh.newrun.domain.data.RUN_PAUSE
 import kr.ac.kumoh.newrun.service.MyLocationService
 import java.util.*
 import kotlin.concurrent.timer
@@ -151,9 +152,6 @@ class RunFragment : Fragment(), OnMapReadyCallback {
             if(currentCount ==0) {
                 requireActivity().runOnUiThread { countDownTextView.visibility = View.INVISIBLE}
                 timer?.cancel()
-                val intent = Intent(activity, MyLocationService::class.java)
-                    .apply{ action = LOCATION_STOP }
-                requireActivity().startService(intent)
                 val runIntent = Intent(activity, RunActivity::class.java)
                 startActivity(runIntent)
             } else{
@@ -183,6 +181,7 @@ class RunFragment : Fragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(map: GoogleMap) {
+        Log.d("테스트", "맵 준비 완료")
         googleMap = map
         googleMap.uiSettings.setAllGesturesEnabled(false)
         googleMap.uiSettings.isZoomControlsEnabled = false
@@ -269,11 +268,6 @@ class RunFragment : Fragment(), OnMapReadyCallback {
     override fun onStop() {
         super.onStop()
         mMap.onStop()
-        LocalBroadcastManager.getInstance(requireActivity()).registerReceiver(
-            locationReceiver, IntentFilter(ACTION_LOCATION_UPDATE))
-        val intent = Intent(activity, MyLocationService::class.java)
-            .apply{ action = LOCATION_STOP }
-        requireActivity().startService(intent)
     }
 
     override fun onResume() {
@@ -284,6 +278,9 @@ class RunFragment : Fragment(), OnMapReadyCallback {
     override fun onPause() {
         super.onPause()
         mMap.onPause()
+        val intent = Intent(activity, MyLocationService::class.java)
+            .apply{ action = LOCATION_STOP }
+        requireActivity().startService(intent)
         timer?.cancel()
     }
 

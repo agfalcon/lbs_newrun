@@ -8,6 +8,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.*
+import com.google.android.gms.maps.model.LatLng
 import kr.ac.kumoh.newrun.domain.data.ACTION_LOCATION_UPDATE
 import kr.ac.kumoh.newrun.domain.data.ACTION_RUN_UPDATE
 import kr.ac.kumoh.newrun.domain.data.DISTANCE_DATA_INFO
@@ -16,7 +17,10 @@ import kr.ac.kumoh.newrun.domain.data.LOCATION_START
 import kr.ac.kumoh.newrun.domain.data.LOCATION_STOP
 import kr.ac.kumoh.newrun.domain.data.MyLocation
 import kr.ac.kumoh.newrun.domain.data.RUN_PAUSE
+import kr.ac.kumoh.newrun.domain.data.RUN_RESUME
 import kr.ac.kumoh.newrun.domain.data.RUN_START
+import kr.ac.kumoh.newrun.domain.data.RunningData
+import kr.ac.kumoh.newrun.domain.data.RunningData.time
 import kr.ac.kumoh.newrun.domain.data.TIME_DATA_INFO
 import kr.ac.kumoh.newrun.domain.data.TIME_RECORD
 import kr.ac.kumoh.newrun.domain.model.TimeRecordData
@@ -29,12 +33,7 @@ class MyLocationService : Service() {
 
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var timer: Timer? = null
-    private var timeRecord = mutableListOf<TimeRecordData>()
-    private var time = 0
-    private var distance:Double = 0.0
-    private var velocity:Double = 0.0
-    private  val R = 6372.8 * 1000
+
 
 
 
@@ -56,6 +55,7 @@ class MyLocationService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when(intent?.action){
             LOCATION_START -> {
+                Log.d("테스트", "service: Location start")
                 fusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     locationCallback,
@@ -63,23 +63,27 @@ class MyLocationService : Service() {
                 )
             }
             LOCATION_STOP -> {
+                Log.d("테스트", "service: Location stop")
                 fusedLocationClient.removeLocationUpdates(locationCallback)
-                timer?.cancel()
+                RunningData.timer?.cancel()
+                RunningData.timeRecord = mutableListOf()
+                RunningData.reset()
                 stopSelf()
             }
             RUN_START -> {
+                Log.d("테스트", "service: run start")
                 fusedLocationClient.requestLocationUpdates(
                     locationRequest,
                     locationCallback,
                     Looper.getMainLooper()
                 )
-                timeRecord = mutableListOf()
-                timeRecord.add(TimeRecordData(0, MyLocation.myLatitude!!, MyLocation.myLongitude!!))
+                RunningData.timeRecord.add(TimeRecordData(0, MyLocation.myLatitude!!, MyLocation.myLongitude!!))
                 timeCheckStart()
             }
             RUN_PAUSE -> {
+                Log.d("테스트", "service: run pause")
                 fusedLocationClient.removeLocationUpdates(locationCallback)
-                timer?.cancel()
+                RunningData.timer?.cancel()
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -87,18 +91,20 @@ class MyLocationService : Service() {
 
     private fun timeCheckStart(){
         Log.d("테스트", "timer 시작")
-        timer = timer(initialDelay = 0, period = 1000){
+        RunningData.timer = timer(initialDelay = 0, period = 1000){
             time +=1
-            distance += round(getDistance(MyLocation.myLatitude!!, MyLocation.myLongitude!!, timeRecord.last().latitude, timeRecord.last().longitude)/1000*100)/100
-            timeRecord.add(TimeRecordData(time, MyLocation.myLatitude!!, MyLocation.myLongitude!!))
-            Log.d("테스트", "거리 : $distance")
-            velocity = round(distance/time*60*60*100)/100
-            Log.d("테스트", "속도 : $velocity")
+            RunningData.distance += round(getDistance(MyLocation.myLatitude!!, MyLocation.myLongitude!!, RunningData.timeRecord.last().latitude, RunningData.timeRecord.last().longitude)/1000*100)/100
+            RunningData.timeRecord.add(TimeRecordData(time, MyLocation.myLatitude!!, MyLocation.myLongitude!!))
+            Log.d("테스트", "시간 : $time")
+            Log.d("테스트", "거리 : ${RunningData.distance}")
+            RunningData.velocity = round(RunningData.distance/time*60*60*100)/100
+            Log.d("테스트", "속도 : ${RunningData.velocity}")
+            Log.d("테스트", "위도, 경도: ${MyLocation.myLatitude}, ${MyLocation.myLongitude}")
             val intent = Intent(ACTION_RUN_UPDATE).apply {
                 putExtra(TIME_DATA_INFO, time)
-                putExtra(DISTANCE_DATA_INFO, distance)
-                putExtra(VELOCITY_DATA_INFO, velocity)
-                putExtra(TIME_RECORD, timeRecord.toTypedArray())
+                putExtra(DISTANCE_DATA_INFO, RunningData.distance)
+                putExtra(VELOCITY_DATA_INFO, RunningData.velocity)
+                putExtra(TIME_RECORD, RunningData.timeRecord.toTypedArray())
             }
             sendBroadcast(intent)
         }
@@ -109,7 +115,7 @@ class MyLocationService : Service() {
         val dLon = Math.toRadians(lon2 - lon1)
         val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
         val c = 2 * asin(sqrt(a))
-        return (R * c)
+        return (RunningData.R * c)
     }
 
 

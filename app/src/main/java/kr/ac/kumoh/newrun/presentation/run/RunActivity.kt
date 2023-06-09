@@ -49,9 +49,11 @@ class RunActivity : AppCompatActivity() {
         binding.pauseButton.setOnClickListener {
             pauseRunning()
         }
+        binding.
     }
 
     override fun onResume() {
+        super.onResume()
         Log.d("테스트", "receiver 등록")
         val filter = IntentFilter(ACTION_RUN_UPDATE)
         registerReceiver(runDataReceiver, filter)
@@ -59,16 +61,16 @@ class RunActivity : AppCompatActivity() {
         val intent = Intent(this, MyLocationService::class.java)
             .apply{ action = RUN_START }
         startService(intent)
-        super.onResume()
     }
 
-    override fun onPause() {
+    override fun onPause() {Log.d("테스트", "RunActivity pause")
         unregisterReceiver(runDataReceiver)
         super.onPause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        Log.d("테스트", "RunActivity Destroy")
         val intent = Intent(this, MyLocationService::class.java)
             .apply{ action = LOCATION_STOP }
         startService(intent)

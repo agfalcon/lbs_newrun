@@ -11,7 +11,3 @@ data class RecordListItem (
 
 
 
-data class LatLng(
-    val latitude: Float,
-    val longitude: Float
-)

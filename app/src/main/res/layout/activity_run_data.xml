@@ -150,13 +150,29 @@
 
     <Button
         android:id="@+id/shareButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="80dp"
+        app:layout_constraintWidth_percent="0.5"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="러닝 공유하기"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/spoqa_medium"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/exitButton"
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.5"
         android:layout_height="80dp"
         android:background="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="러닝 공유하기"
+        android:text="나가기"
         android:gravity="center"
         android:textColor="@color/white"
         android:textSize="18sp"
