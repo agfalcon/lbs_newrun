@@ -27,8 +27,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.R
-import kr.ac.kumoh.newrun.data.RetrofitService
-import kr.ac.kumoh.newrun.data.model.IDRequest
 import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
 import kr.ac.kumoh.newrun.domain.data.UserInfo
@@ -245,7 +243,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getUserInfo() {
         CoroutineScope(Dispatchers.IO).launch {
-            UserService().getUserInfo(UserInfo.id.toString())
+            UserService().getUserInfo(UserInfo.userEmail.toString())
         }
     }
 }

@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -45,7 +44,7 @@ class HomeFragment : Fragment() {
         velocityOfWeekTextView = view.findViewById(R.id.velocityOfWeekTextView)
         calorieOfWeekTextView = view.findViewById(R.id.calorieOfWeekTextView)
         CoroutineScope(Dispatchers.IO).launch {
-            val result = MyRecordService().weekRecord(UserInfo.id.toString())
+            val result = MyRecordService().weekRecord(UserInfo.userEmail.toString())
             CoroutineScope(Dispatchers.Main).launch {
                 recodeOfWeekTextView.text =
                     (Math.round(result.totalDistance * 100) / 100.0).toString()
@@ -67,7 +66,7 @@ class HomeFragment : Fragment() {
 
     private fun setUpRankListView() {
         CoroutineScope(Dispatchers.IO).launch {
-            rankList = RankService().getRank(UserInfo.id.toString())
+            rankList = RankService().getRank()
             rankList.forEachIndexed{ index, item ->
                 rankData.add(RankData(index+1, item.nickName, ((Math.round(item.totalDistance * 100) / 100.0).toFloat())))
             }

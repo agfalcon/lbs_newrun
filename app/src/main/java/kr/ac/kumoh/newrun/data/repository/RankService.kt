@@ -6,8 +6,8 @@ import kr.ac.kumoh.newrun.data.model.RankResponse
 
 class RankService {
 
-    suspend fun getRank(id: String) : List<RankResponse>{
-        val result = RetrofitService.rankService.getRank(IDRequest(id)).execute()
+    suspend fun getRank() : List<RankResponse>{
+        val result = RetrofitService.rankService.getRank().execute()
         if(result.isSuccessful){
             return result.body() ?: emptyList()
         }

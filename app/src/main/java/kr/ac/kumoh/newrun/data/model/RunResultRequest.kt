@@ -11,6 +11,6 @@ data class RunResultRequest(
     val run_time : String,
     @SerializedName("route")
     val route : String,
-    @SerializedName("user_id")
+    @SerializedName("u_email")
     val userId : String,
 )

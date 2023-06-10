@@ -1,7 +1,7 @@
 package kr.ac.kumoh.newrun.domain.data
 
 object UserInfo {
-    var id: Int = 1
+    var userEmail: String = "a@naver.com"
     var userName : String = ""
     var nickName : String = ""
     var userPicture : String = ""

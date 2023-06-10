@@ -28,14 +28,14 @@ import kr.ac.kumoh.newrun.data.model.MyRecord
 import kr.ac.kumoh.newrun.data.model.RunData
 import kr.ac.kumoh.newrun.data.repository.MyRecordService
 import kr.ac.kumoh.newrun.domain.data.UserInfo
-import kr.ac.kumoh.newrun.domain.model.LatLng
-import kr.ac.kumoh.newrun.domain.model.RecordListItem
 import java.lang.Math.round
+import java.text.SimpleDateFormat
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+import java.util.Calendar
 import java.util.Locale
 
 
@@ -45,7 +45,11 @@ class RecordFragment : Fragment() {
 
     private lateinit var myRecord : MyRecord
     private lateinit var runData : List<RunData>
+    private lateinit var runningTextView : TextView
     var selectedMode = 1
+    var tempDistance: Float = 0f
+    var lastDate: String = ""
+    var dDay = 0
 
     private lateinit var calendarView: WeekCalendarView
     private lateinit var monthTextView: TextView
@@ -70,9 +74,10 @@ class RecordFragment : Fragment() {
         totalButton = view.findViewById(R.id.totalButton)
         weekButton = view.findViewById(R.id.weekButton)
         monthButton = view.findViewById(R.id.monthButton)
-        setCalender(view)
+        runningTextView = view.findViewById(R.id.runningTextView)
         getMyRecord()
-        getAllData()
+        getAllData(view)
+
         totalButton.setOnClickListener {
             selectedMode = 1
             totalButton.setTextColor(resources.getColor(R.color.white))
@@ -111,21 +116,43 @@ class RecordFragment : Fragment() {
 
     }
 
-    private fun getAllData() {
+    private fun getAllData(view: View) {
         CoroutineScope(Dispatchers.IO).launch {
-            runData = MyRecordService().getAllRunData(UserInfo.id.toString())
+            runData = MyRecordService().getAllRunData(UserInfo.userEmail.toString())
             CoroutineScope(Dispatchers.Main).launch {
                 val recordAdapter = RecordListAdapter(runData)
                 recordAdapter.notifyDataSetChanged()
                 recordList.adapter = recordAdapter
                 recordList.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
+                setCalender(view)
+                getdDay(0)
+
+            }
+        }
+    }
+
+    private fun getdDay(day : Int) {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+        val startDate = dateFormat.parse(runData[0].date.split("T")[0]).time
+        val today = Calendar.getInstance().apply {
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }.time.time
+        val diff = ((today - startDate) / (24 * 60 * 60 * 1000)).toInt() - day
+        when(diff){
+            0 -> {dDay+=1}
+            else -> {
+                if(dDay ==0) runningTextView.text = "${diff}일 전이 마지막 운동이에요!!"
+                else runningTextView.text = "${dDay} 연속 운동중이에요!!"
             }
         }
     }
 
     private fun getMyRecord() {
         CoroutineScope(Dispatchers.IO).launch {
-            myRecord = MyRecordService().getMyRecord(UserInfo.id.toString())
+            myRecord = MyRecordService().getMyRecord(UserInfo.userEmail.toString())
             CoroutineScope(Dispatchers.Main).launch {
                 when(selectedMode){
                     1 -> recordTextView.text = (round(myRecord.totalDistance*100)/100.0).toString()
@@ -142,7 +169,28 @@ class RecordFragment : Fragment() {
 
             override fun bind(container: DayViewContainer, data: WeekDay) {
                 container.dayTextView.text = data.date.dayOfMonth.toString()
-                container.dayImageVIEW.setImageResource(emoticonResource[0])
+                val goal = UserInfo.goalDistance/7
+                runData.forEach{ item ->
+                    if(data.date.compareTo(LocalDate.parse(item.date.split("T")[0], DateTimeFormatter.ISO_DATE))==0) {
+                        if(item.date==lastDate){
+                            tempDistance += item.distance
+                        }
+                        else {
+                            tempDistance = item.distance
+                            lastDate = item.date
+
+                        }
+                        if(tempDistance >= 0.7 * goal){
+                            container.dayImageVIEW.setImageResource(emoticonResource[0])
+                        }
+                        else if(tempDistance >= 0.5 * goal) {
+                            container.dayImageVIEW.setImageResource(emoticonResource[1])
+                        }
+                        else {
+                            container.dayImageVIEW.setImageResource(emoticonResource[2])
+                        }
+                    }
+                }
             }
 
             // Called only when a new container is needed.
