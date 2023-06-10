@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
@@ -20,8 +21,6 @@ class SignUpPwActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpPwBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val userId = intent.getStringExtra("userId")
 
         binding.btnSignUpComplete.alpha = 0.5f
         binding.check7more.alpha = 0.5f
@@ -51,7 +50,10 @@ class SignUpPwActivity : AppCompatActivity() {
 
         //<-----------회원가입 완료(다이어로그)--------------->
         binding.btnSignUpComplete.setOnClickListener {
-            val userPw = binding.textInputSignupPw.text
+            val userId = intent.getStringExtra("userId")
+            val userPw = binding.textInputSignupPw.text.toString()
+            Log.i("Pw페이지 : "," ${userId} ")
+            Log.i("Pw페이지 : "," ${userPw} ")
 
             val intent = Intent(this, SignUpDetailActivity::class.java)
             intent.putExtra("userId", userId)

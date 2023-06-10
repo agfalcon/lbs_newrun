@@ -57,6 +57,7 @@
         android:layout_height="60dp"
         android:background="@drawable/text_box"
         android:hint="1주일 러닝 목표(km)"
+        android:inputType="number"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
