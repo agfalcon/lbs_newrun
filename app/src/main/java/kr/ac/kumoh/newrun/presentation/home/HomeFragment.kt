@@ -8,27 +8,29 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.ProgressBar
+import android.widget.TextView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.data.model.RankResponse
+import kr.ac.kumoh.newrun.data.repository.MyRecordService
+import kr.ac.kumoh.newrun.data.repository.RankService
 import kr.ac.kumoh.newrun.domain.data.RankData
+import kr.ac.kumoh.newrun.domain.data.UserInfo
 
 
 class HomeFragment : Fragment() {
     private lateinit var goalProgressBar: ProgressBar
     private lateinit var rankListView: ListView
     private lateinit var rankAdapter: RankAdapter
+    private lateinit var goalDataTextView: TextView
+    private lateinit var recodeOfWeekTextView: TextView
+    private lateinit var velocityOfWeekTextView: TextView
+    private lateinit var calorieOfWeekTextView: TextView
+    var rankList = emptyList<RankResponse>()
 
-    val rankData = listOf(
-        RankData(1, "존잘용구", 31.2),
-        RankData(2, "중요한게 뭘줄 알아?", 30.1),
-        RankData(3, "신근쫄", 29.8),
-        RankData(4, "금오산 마동석", 25.8),
-        RankData(5, "누룽지맛치킨", 24.0),
-        RankData(6, "게섯거라", 22.7),
-        RankData(7, "누네띠네", 19.9),
-        RankData(8, "거 참 뛰기 좋은 날이네", 15.1),
-        RankData(9, "구미시 이봉주", 12.3),
-        RankData(10, "다나카", 11.1),
-        )
+    val rankData = ArrayList<RankData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,27 +39,49 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         goalProgressBar = view.findViewById(R.id.goalProgressBar)
         rankListView = view.findViewById(R.id.rankListView)
+        goalDataTextView = view.findViewById(R.id.goalDataTextView)
+        goalDataTextView.text = UserInfo.goalDistance.toString()
+        recodeOfWeekTextView = view.findViewById(R.id.recodeOfWeekTextView)
+        velocityOfWeekTextView = view.findViewById(R.id.velocityOfWeekTextView)
+        calorieOfWeekTextView = view.findViewById(R.id.calorieOfWeekTextView)
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = MyRecordService().weekRecord(UserInfo.id.toString())
+            CoroutineScope(Dispatchers.Main).launch {
+                recodeOfWeekTextView.text =
+                    (Math.round(result.totalDistance * 100) / 100.0).toString()
+                velocityOfWeekTextView.text = (Math.round(result.avgSpeed * 100) / 100.0).toString()
+                calorieOfWeekTextView.text =
+                    (Math.round((result.avgSpeed * 100 / 3.5 * 4.5) * 100) / 100.0).toString()
+                setUpGoalProgressBar()
+            }
+        }
+        setUpRankListView()
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setUpData()
+
     }
 
-    private fun setUpData(){
-        setUpGoalProgressBar()
-        setUpRankListView()
-    }
 
     private fun setUpRankListView() {
-        rankAdapter = RankAdapter(requireActivity(), rankData)
-        rankListView.adapter = rankAdapter
+        CoroutineScope(Dispatchers.IO).launch {
+            rankList = RankService().getRank(UserInfo.id.toString())
+            rankList.forEachIndexed{ index, item ->
+                rankData.add(RankData(index+1, item.nickName, ((Math.round(item.totalDistance * 100) / 100.0).toFloat())))
+            }
+            CoroutineScope(Dispatchers.Main).launch {
+                rankAdapter = RankAdapter(requireActivity(), rankData)
+                rankListView.adapter = rankAdapter
+            }
+        }
+
     }
 
     private fun setUpGoalProgressBar() {
         // Set the progress value (0-100)
-        goalProgressBar.progress = 30
+        goalProgressBar.progress = Math.round(recodeOfWeekTextView.text.toString().toFloat()/goalDataTextView.text.toString().toFloat()*100)
     }
 
 }

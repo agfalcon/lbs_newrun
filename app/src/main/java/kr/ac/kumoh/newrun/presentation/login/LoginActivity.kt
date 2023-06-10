@@ -22,9 +22,16 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.data.RetrofitService
+import kr.ac.kumoh.newrun.data.model.IDRequest
+import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
+import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.presentation.signup.SignUpIDActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -68,6 +75,9 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, SignUpIDActivity::class.java)
             startActivity(intent)
         }
+
+        //테스트용 !!!!--- 나중에 지울거
+        getUserInfo()
     }
 
     private fun kakaoSingOut() {
@@ -231,5 +241,11 @@ class LoginActivity : AppCompatActivity() {
     private fun startNaverLogout(){
         NaverIdLoginSDK.logout()
         Toast.makeText(this@LoginActivity, "네이버 아이디 로그아웃 성공!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun getUserInfo() {
+        CoroutineScope(Dispatchers.IO).launch {
+            UserService().getUserInfo(UserInfo.id.toString())
+        }
     }
 }

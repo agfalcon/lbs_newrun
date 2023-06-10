@@ -2,9 +2,12 @@ package kr.ac.kumoh.newrun.data
 
 import kr.ac.kumoh.newrun.data.api.DiffusionApi
 import kr.ac.kumoh.newrun.data.api.MyRecordApi
+import kr.ac.kumoh.newrun.data.api.RankApi
 import kr.ac.kumoh.newrun.data.api.RecordRunningApi
+import kr.ac.kumoh.newrun.data.api.UserApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 
 object RetrofitService {
     //Node.js와 통신
@@ -12,7 +15,8 @@ object RetrofitService {
         .addConverterFactory(GsonConverterFactory.create()).build()
     val recordRunningService = retrofit.create(RecordRunningApi::class.java)
     val myRecordService = retrofit.create(MyRecordApi::class.java)
-
+    val userService = retrofit.create(UserApi::class.java)
+    val rankService = retrofit.create(RankApi::class.java)
 
     //Flask 서버와 통신
     val retrofit2 = Retrofit.Builder().baseUrl("http://10.0.2.2:5000/")

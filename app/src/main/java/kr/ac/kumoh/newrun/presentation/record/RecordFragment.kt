@@ -1,8 +1,6 @@
 package kr.ac.kumoh.newrun.presentation.record
 
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +16,6 @@ import com.kizitonwose.calendar.core.Week
 import com.kizitonwose.calendar.core.WeekDay
 import com.kizitonwose.calendar.core.atStartOfMonth
 import com.kizitonwose.calendar.core.daysOfWeek
-import com.kizitonwose.calendar.view.DaySize
-import com.kizitonwose.calendar.view.MarginValues
 import com.kizitonwose.calendar.view.ViewContainer
 import com.kizitonwose.calendar.view.WeekCalendarView
 import com.kizitonwose.calendar.view.WeekDayBinder
@@ -29,10 +25,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.model.MyRecord
-import kr.ac.kumoh.newrun.data.model.RecordRequest
+import kr.ac.kumoh.newrun.data.model.RunData
 import kr.ac.kumoh.newrun.data.repository.MyRecordService
-import kr.ac.kumoh.newrun.data.repository.RecordRunningService
-import kr.ac.kumoh.newrun.data.repository.StableDiffusionService
 import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.domain.model.LatLng
 import kr.ac.kumoh.newrun.domain.model.RecordListItem
@@ -47,15 +41,10 @@ import java.util.Locale
 
 class RecordFragment : Fragment() {
 
-    val recordItems = listOf(
-        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
-        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
-        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
-        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
-        RecordListItem(emptyList<LatLng>(), "오늘", "2023.05.11", "3.8km", "8.8km", "32:14"),
-        )
+
 
     private lateinit var myRecord : MyRecord
+    private lateinit var runData : List<RunData>
     var selectedMode = 1
 
     private lateinit var calendarView: WeekCalendarView
@@ -81,12 +70,9 @@ class RecordFragment : Fragment() {
         totalButton = view.findViewById(R.id.totalButton)
         weekButton = view.findViewById(R.id.weekButton)
         monthButton = view.findViewById(R.id.monthButton)
-        val recordAdapter = RecordListAdapter(recordItems)
-        recordAdapter.notifyDataSetChanged()
-        recordList.adapter = recordAdapter
-        recordList.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
         setCalender(view)
         getMyRecord()
+        getAllData()
         totalButton.setOnClickListener {
             selectedMode = 1
             totalButton.setTextColor(resources.getColor(R.color.white))
@@ -123,6 +109,18 @@ class RecordFragment : Fragment() {
             else recordTextView.text = (round(myRecord.monthlyDistance*100)/100.0).toString()
         }
 
+    }
+
+    private fun getAllData() {
+        CoroutineScope(Dispatchers.IO).launch {
+            runData = MyRecordService().getAllRunData(UserInfo.id.toString())
+            CoroutineScope(Dispatchers.Main).launch {
+                val recordAdapter = RecordListAdapter(runData)
+                recordAdapter.notifyDataSetChanged()
+                recordList.adapter = recordAdapter
+                recordList.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
+            }
+        }
     }
 
     private fun getMyRecord() {
