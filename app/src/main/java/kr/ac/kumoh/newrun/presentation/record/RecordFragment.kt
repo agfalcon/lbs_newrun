@@ -152,7 +152,7 @@ class RecordFragment : Fragment() {
 
     private fun getMyRecord() {
         CoroutineScope(Dispatchers.IO).launch {
-            myRecord = MyRecordService().getMyRecord(UserInfo.userEmail.toString())
+            myRecord = MyRecordService().getMyRecord(UserInfo.userEmail)
             CoroutineScope(Dispatchers.Main).launch {
                 when(selectedMode){
                     1 -> recordTextView.text = (round(myRecord.totalDistance*100)/100.0).toString()

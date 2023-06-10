@@ -7,11 +7,11 @@ import kr.ac.kumoh.newrun.domain.data.UserInfo
 
 class UserService {
 
-    suspend fun getUserInfo(id: String) {
-        val result = RetrofitService.userService.getUserInfo(IDRequest(UserInfo.userEmail.toString())).execute()
+    suspend fun getUserInfo(email: String){
+        val result = RetrofitService.userService.getUserInfo(IDRequest(email)).execute()
         if(result.isSuccessful){
             val info = result.body()
-            UserInfo.userEmail = info?.id ?: 0
+            UserInfo.userEmail = info?.email ?: ""
             UserInfo.userName  = info?.userName ?: ""
             UserInfo.nickName = info?.nickName ?: ""
             UserInfo.goalDistance = info?.goalDistance ?: 0f

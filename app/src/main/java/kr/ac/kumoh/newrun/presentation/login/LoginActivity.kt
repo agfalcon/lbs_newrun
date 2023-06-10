@@ -243,7 +243,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun getUserInfo() {
         CoroutineScope(Dispatchers.IO).launch {
-            UserService().getUserInfo(UserInfo.userEmail.toString())
+            UserService().getUserInfo(UserInfo.userEmail)
         }
     }
 }
