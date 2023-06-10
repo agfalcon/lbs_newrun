@@ -7,15 +7,10 @@
     android:layout_height="match_parent"
     tools:context=".presentation.signup.SignUpPwActivity">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
         <ImageButton
             android:id="@+id/btn_back"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="15dp"
             android:background="@android:color/transparent"
@@ -122,7 +117,4 @@
             app:layout_constraintStart_toEndOf="@+id/check_7more"
             app:layout_constraintTop_toTopOf="@+id/check_7more"
             app:layout_constraintVertical_bias="0.0" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

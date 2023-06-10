@@ -21,6 +21,8 @@ class SignUpPwActivity : AppCompatActivity() {
         binding = ActivitySignUpPwBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val userId = intent.getStringExtra("userId")
+
         binding.btnSignUpComplete.alpha = 0.5f
         binding.check7more.alpha = 0.5f
         binding.chekcPwEqual.alpha = 0.5f
@@ -49,7 +51,13 @@ class SignUpPwActivity : AppCompatActivity() {
 
         //<-----------회원가입 완료(다이어로그)--------------->
         binding.btnSignUpComplete.setOnClickListener {
-            showDialog()
+            val userPw = binding.textInputSignupPw.text
+
+            val intent = Intent(this, SignUpDetailActivity::class.java)
+            intent.putExtra("userId", userId)
+            intent.putExtra("userPw", userPw)
+            startActivity(intent)
+        //showDialog()
         }
     }
     private fun updateUI(password: String, passwordCheck: String) {

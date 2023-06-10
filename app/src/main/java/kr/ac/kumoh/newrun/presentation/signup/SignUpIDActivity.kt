@@ -29,6 +29,7 @@ class SignUpIDActivity : AppCompatActivity() {
 
         binding.btnNext.setOnClickListener {
             val intent = Intent(this, SignUpPwActivity::class.java)
+            intent.putExtra("userId", binding.textInputLogin.text)
             startActivity(intent)
         }
     }

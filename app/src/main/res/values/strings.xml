@@ -5,7 +5,7 @@
     <string name="naver_client_id">vQCLNfh_AonecEca7twX</string>
     <string name="naver_client_secret">hbOUnL6Izn</string>
     //카카오 로그인 네이티브 키
-    <string name="kakao_key">7838470033314dc8a86154ed9641a155</string>
+    <string name="kakao_key">b43a2fb428ca6657385740c6f50ed547</string>
 
     //구글 로그인을 위한 클라이언트 키
 
