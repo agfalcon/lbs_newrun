@@ -27,6 +27,7 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
