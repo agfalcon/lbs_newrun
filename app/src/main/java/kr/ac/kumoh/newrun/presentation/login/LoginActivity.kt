@@ -24,22 +24,16 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-<<<<<<< Updated upstream
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.presentation.HomeActivity
-=======
->>>>>>> Stashed changes
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
-<<<<<<< Updated upstream
 import kr.ac.kumoh.newrun.domain.data.UserInfo
-=======
-import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.presentation.signup.SignUpDetailActivity
->>>>>>> Stashed changes
 import kr.ac.kumoh.newrun.presentation.signup.SignUpIDActivity
 
 
@@ -82,11 +76,9 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this@LoginActivity, SignUpIDActivity::class.java)
             startActivity(intent)
         }
-<<<<<<< Updated upstream
 
         //테스트용 !!!!--- 나중에 지울거
         getUserInfo()
-=======
         naver_autoLogin()
     }
     private fun naver_autoLogin() {
@@ -175,7 +167,6 @@ class LoginActivity : AppCompatActivity() {
         }
         else { //로그인 필요}
         }
->>>>>>> Stashed changes
     }
 
     private fun kakaoSingOut() {
@@ -356,15 +347,13 @@ class LoginActivity : AppCompatActivity() {
         Toast.makeText(this@LoginActivity, "네이버 아이디 로그아웃 성공!", Toast.LENGTH_SHORT).show()
     }
 
-<<<<<<< Updated upstream
     private fun getUserInfo() {
         CoroutineScope(Dispatchers.IO).launch {
             UserService().getUserInfo(UserInfo.userEmail)
         }
     }
 }
-=======
-}
+
 
 //유배 코드
 ////onActivityResult => sub액티비티로 넘어갔다 다시 main으로 돌아올 때 사용되는 메소드
@@ -389,4 +378,3 @@ class LoginActivity : AppCompatActivity() {
 //            }
 //        }
 //    }
->>>>>>> Stashed changes

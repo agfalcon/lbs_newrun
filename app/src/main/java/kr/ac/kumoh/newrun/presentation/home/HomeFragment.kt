@@ -8,13 +8,9 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.TextView
-<<<<<<< Updated upstream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-=======
-import com.navercorp.nid.oauth.NidOAuthLogin
->>>>>>> Stashed changes
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.model.RankResponse
 import kr.ac.kumoh.newrun.data.repository.MyRecordService
