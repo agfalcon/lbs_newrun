@@ -2,11 +2,13 @@ package kr.ac.kumoh.newrun.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kr.ac.kumoh.newrun.presentation.image.ImageFragment
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.databinding.ActivityHomeBinding
 import kr.ac.kumoh.newrun.presentation.crew.CrewFragment
 import kr.ac.kumoh.newrun.presentation.home.HomeFragment
+import kr.ac.kumoh.newrun.presentation.login.LoginActivity
 import kr.ac.kumoh.newrun.presentation.record.RecordFragment
 import kr.ac.kumoh.newrun.presentation.run.RunFragment
 
@@ -16,7 +18,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initNavigationBar()
     }
     private fun initNavigationBar(){
