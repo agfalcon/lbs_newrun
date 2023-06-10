@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import kr.ac.kumoh.newrun.databinding.ActivitySignUpIdactivityBinding
+import android.util.Log
+import kr.ac.kumoh.newrun.databinding.ActivitySignUpIdBinding
 
 class SignUpIDActivity : AppCompatActivity() {
-    private lateinit var binding:ActivitySignUpIdactivityBinding
+    private lateinit var binding:ActivitySignUpIdBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySignUpIdactivityBinding.inflate(layoutInflater)
+        binding = ActivitySignUpIdBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnNext.alpha = 0.5f
@@ -28,8 +29,10 @@ class SignUpIDActivity : AppCompatActivity() {
         })
 
         binding.btnNext.setOnClickListener {
+            val userId = binding.textInputLogin.text.toString()
             val intent = Intent(this, SignUpPwActivity::class.java)
-            intent.putExtra("userId", binding.textInputLogin.text)
+            intent.putExtra("userId", userId)
+            Log.i("ID페이지 : "," ${userId} ")
             startActivity(intent)
         }
     }

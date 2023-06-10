@@ -14,8 +14,11 @@ class SignUpDetailActivity : AppCompatActivity() {
         binding = ActivitySignUpDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //자체 회원가입
         val userId = intent.getStringExtra("userId")
         val userPw = intent.getStringExtra("userPw")
+
+        //소셜 로그인을 통해 얻은 회원가입
         val userEmail = intent.getStringExtra("userEmail")
         
         binding.btnSignUpComplete.setOnClickListener {

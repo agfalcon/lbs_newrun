@@ -1,87 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.record.RecordFragment">
+    tools:context=".presentation.record.RecordFragment"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="29dp">
 
-    <Button
-        android:id="@+id/btn_naverlogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="30dp"
-        android:text="네이버 로그아웃"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_naverlogout"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="30dp"-->
+    <!--        android:layout_marginTop="20dp"-->
+    <!--        android:layout_marginBottom="30dp"-->
+    <!--        android:text="네이버 로그아웃"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="parent"-->
+    <!--        app:layout_constraintVertical_bias="0.0" />-->
+
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_googlelogout"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:text="구글 로그아웃"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.031"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btn_naverlogout"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/btn_naverlogout" />-->
+
+    <!--    <Button-->
+    <!--        android:id="@+id/btn_kakaologout"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginStart="10dp"-->
+    <!--        android:text="카카오 로그아웃"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintHorizontal_bias="0.0"-->
+    <!--        app:layout_constraintStart_toEndOf="@+id/btn_googlelogout"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/btn_googlelogout"-->
+    <!--        app:layout_constraintVertical_bias="0.0" />-->
 
     <TextView
-        android:id="@+id/tv_result"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="로그인 내용"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_googlelogout"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <Button
-        android:id="@+id/btn_googlelogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="45dp"
-        android:text="구글 로그아웃"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.052"
-        app:layout_constraintStart_toEndOf="@+id/btn_naverlogout"
-        app:layout_constraintTop_toTopOf="@+id/btn_naverlogout"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btn_kakaologout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="카카오 로그아웃"
-        app:layout_constraintBottom_toTopOf="@+id/tv_result"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/btn_googlelogout"
-        app:layout_constraintTop_toTopOf="@+id/btn_googlelogout"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <!--    <ImageView-->
-<!--        android:id="@+id/imageView"-->
-<!--        android:layout_width="238dp"-->
-<!--        android:layout_height="369dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/btn_kakao"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.497"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:srcCompat="@drawable/logo_" />-->
-
-    <Button
-        android:id="@+id/btnsignup"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:text="회원가입"
+        android:fontFamily="@font/spoqa_bold"
+        android:text="NewRun"
+        android:textColor="@color/main_color"
+        android:textSize="54dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_google" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.358" />
+
+    <TextView
+        android:id="@+id/tv_title2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/spoqa_light"
+        android:text="일상 속 운동의 즐거움"
+        android:textColor="@color/main_color"
+        android:textSize="30dp"
+        android:textStyle="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.266" />
 
     <ImageButton
         android:id="@+id/btn_kakao"
@@ -90,21 +84,28 @@
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:src="@drawable/kakao_login_large_wide"
-        app:layout_constraintBottom_toTopOf="@+id/btn_naver"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_result" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/btn_google"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_naver"></com.google.android.gms.common.SignInButton>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498" />
+
+    <android.widget.Button
+        android:id="@+id/btn_login"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:background="@color/main_color"
+        android:text="뉴런 로그인"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.685" />
 
     <ImageButton
         android:id="@+id/btn_naver"
@@ -113,11 +114,25 @@
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
         android:src="@drawable/naver_login"
-        app:layout_constraintBottom_toTopOf="@+id/btn_google"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_kakao" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.596" />
+
+    <Button
+        android:id="@+id/btn_NaverLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="네이버 로그아웃 [임시]"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.893">
+
+    </Button>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

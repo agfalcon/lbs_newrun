@@ -24,7 +24,6 @@ import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
 import com.navercorp.nid.profile.data.NidProfileResponse
-
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -33,13 +32,12 @@ import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
 import kr.ac.kumoh.newrun.domain.data.UserInfo
+import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.presentation.signup.SignUpDetailActivity
 import kr.ac.kumoh.newrun.presentation.signup.SignUpIDActivity
 
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth//파이어베이스 객체 가져오기
-    private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         kakao_autoLogin()
@@ -50,37 +48,25 @@ class LoginActivity : AppCompatActivity() {
 
         //<-------------------Kakao 로그인 로직--------------------->
         binding.btnKakao.setOnClickListener { kakaoSingIn() }
-        binding.btnKakaologout.setOnClickListener { kakaoSingOut() }
+        //binding.btnKakaologout.setOnClickListener { kakaoSingOut() }
 
 
         //<-------------------네이버 로그인 로직--------------------->
         binding.btnNaver.setOnClickListener {startNaverLogin() }
-        binding.btnNaverlogout.setOnClickListener { startNaverLogout() }
+        binding.btnNaverLogout.setOnClickListener { startNaverLogout() }
 
-
-        //<-------------------구글 로그인 로직---------------------
-        binding.btnGoogle.setOnClickListener { signIn() }
-        binding.btnGooglelogout.setOnClickListener { signOut() }
-        //Google 로그인 옵션 구성. requestIdToken 및 Email 요청
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        // 파이어베이스 초기화
-        auth = Firebase.auth
-
-        //<-------------------자체 회원가입 로직---------------------
-        binding.btnsignup.setOnClickListener {
-            val intent = Intent(this@LoginActivity, SignUpIDActivity::class.java)
+        
+        //<-------------------자체 로그인 로직---------------------
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(this, LoginNRActivity::class.java)
             startActivity(intent)
         }
-
         //테스트용 !!!!--- 나중에 지울거
         getUserInfo()
         naver_autoLogin()
     }
+    
+    val TAG = "테스트"
     private fun naver_autoLogin() {
         var naverToken :String? = ""
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
@@ -115,7 +101,6 @@ class LoginActivity : AppCompatActivity() {
                 var naverExpiresAt = NaverIdLoginSDK.getExpiresAt().toString()
                 var naverTokenType = NaverIdLoginSDK.getTokenType()
                 var naverState = NaverIdLoginSDK.getState().toString()
-                Log.i(TAG, "네이버 : 성공${naverToken}")
 
                 NidOAuthLogin().callProfileApi(profileCallback)
             }
@@ -131,7 +116,16 @@ class LoginActivity : AppCompatActivity() {
                 onFailure(errorCode, message)
             }
         }
-        NaverIdLoginSDK.authenticate(this, oauthLoginCallback)
+        val tkn = NaverIdLoginSDK.getAccessToken()
+        Log.i("네이버) 로그인 토큰 테스트", "${tkn}")
+        if(tkn == null){
+            Log.i("네이버) 로그인 기록 없음", "${tkn}")
+            return
+        } else {
+            Log.i("네이버) 이미 로그인 하셨네요", "${tkn}")
+            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     //카톡 자동 로그인
@@ -236,58 +230,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential).addOnCompleteListener(this) { task ->
-            if (task.isSuccessful) {
-                // 로그인 성공 시 UI 업데이트
-                Log.d(TAG, "signInWithCredential:success")
-                val user = auth.currentUser
-
-            } else {
-                // 로그인 실패 -> 로그 띄우기
-                Log.w(TAG, "signInWithCredential:failure", task.exception)
-            }
-        }
-    }
-    private fun signIn() {
-        Log.i(TAG, "구글 로그인 시도")
-        val acct = GoogleSignIn.getLastSignedInAccount(application)
-        if (acct != null) {
-            val personName = acct.displayName
-            val personGivenName = acct.givenName
-            val personFamilyName = acct.familyName
-            val personEmail = acct.email
-            val personId = acct.id
-            val personPhoto: Uri? = acct.photoUrl
-            Log.i(TAG, "구글 정보 읽기 성공 : $personName $personEmail $personId")
-        } else {
-            Log.i(TAG, "구글 정보 읽기 실패")
-            Log.i(TAG, "구글 정보 읽기 실패 ${acct}")
-        }
-
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-
-        val intent = Intent(this@LoginActivity, HomeActivity::class.java)
-        startActivity(intent)
-        Toast.makeText(this@LoginActivity, "구글 로그인 성공!", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun signOut() {
-        Firebase.auth.signOut()
-        googleSignInClient.signOut().addOnCompleteListener(this) {
-            //updateUI(null)
-        }
-        Toast.makeText(this@LoginActivity, "구글 로그아웃 성공!", Toast.LENGTH_SHORT).show()
-    }
-
-    companion object {
-        private const val TAG = "테스트"
-        private const val RC_SIGN_IN = 9001
-    }
-
 
     //<----------------네이버 관련 로그인-------------->
     private fun startNaverLogin(){
