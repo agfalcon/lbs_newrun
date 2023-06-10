@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
         velocityOfWeekTextView = view.findViewById(R.id.velocityOfWeekTextView)
         calorieOfWeekTextView = view.findViewById(R.id.calorieOfWeekTextView)
         CoroutineScope(Dispatchers.IO).launch {
-            val result = MyRecordService().weekRecord(UserInfo.userEmail.toString())
+            val result = MyRecordService().weekRecord(UserInfo.userEmail)
             CoroutineScope(Dispatchers.Main).launch {
                 recodeOfWeekTextView.text =
                     (Math.round(result.totalDistance * 100) / 100.0).toString()
