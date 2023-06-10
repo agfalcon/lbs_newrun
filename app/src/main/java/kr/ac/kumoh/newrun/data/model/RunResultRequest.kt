@@ -12,5 +12,5 @@ data class RunResultRequest(
     @SerializedName("route")
     val route : String,
     @SerializedName("u_email")
-    val userId : String,
+    val userEmail : String,
 )

@@ -68,9 +68,9 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
             val intent = Intent(this, MyLocationService::class.java).apply{action = LOCATION_STOP }
             startService(intent)
             RunActivity.activity?.finish()
-            Log.d("테스트" , "보내는 값 : ${RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d", time!!/60, time!!%60), userId = UserInfo.userEmail.toString(), route = record)}")
+            Log.d("테스트" , "보내는 값 : ${RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d", time!!/60, time!!%60), userEmail = UserInfo.userEmail, route = record)}")
             CoroutineScope(Dispatchers.IO).launch{
-                val message= RecordRunningService().recordRunning(RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d", time!!/60, time!!%60), userId = UserInfo.userEmail.toString(), route = record))
+                val message= RecordRunningService().recordRunning(RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d", time!!/60, time!!%60), userEmail = UserInfo.userEmail, route = record))
                 Log.d("테스트", "메시지 반환값 : ${message.message}")
             }
             binding.playButton.visibility = View.GONE
