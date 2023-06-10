@@ -3,6 +3,7 @@ package kr.ac.kumoh.newrun.service
 import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
+import android.location.Location
 import android.os.IBinder
 import android.os.Looper
 import android.util.Log
@@ -110,14 +111,23 @@ class MyLocationService : Service() {
         }
     }
 
-    private fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
-        val c = 2 * asin(sqrt(a))
-        return (RunningData.R * c)
-    }
+//    private fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+//        val dLat = Math.toRadians(lat2 - lat1)
+//        val dLon = Math.toRadians(lon2 - lon1)
+//        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+//        val c = 2 * asin(sqrt(a))
+//        return (RunningData.R * c)
+//    }
 
+    private  fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val loc1 = Location("1")
+        loc1.latitude = lat1
+        loc1.longitude = lon1
+        val loc2 = Location("2")
+        loc2.latitude = lat2
+        loc2.longitude = lon2
+        return loc1.distanceTo(loc2).toDouble()
+    }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
