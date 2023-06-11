@@ -18,8 +18,10 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.ClientError
 import com.kakao.sdk.common.model.ClientErrorCause
 import com.kakao.sdk.common.model.KakaoSdkError
+import com.kakao.sdk.template.model.Social
 import com.kakao.sdk.user.UserApiClient
 import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.NaverIdLoginSDK.applicationContext
 import com.navercorp.nid.oauth.NidOAuthLogin
 import com.navercorp.nid.oauth.OAuthLoginCallback
 import com.navercorp.nid.profile.NidProfileCallback
@@ -28,11 +30,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.data.model.snsLoginData
+import kr.ac.kumoh.newrun.data.repository.LoginService
 import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
 import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.presentation.signup.SignUpDetailActivity
+import okhttp3.internal.notifyAll
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -58,19 +63,24 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, LoginNRActivity::class.java)
             startActivity(intent)
         }
-        //테스트용 !!!!--- 나중에 지울거
         naver_autoLogin()
     }
     
     val TAG = "테스트"
+    companion object {
+        val autoEmail = ""
+    }
+    //네이버 자동 로그인
     private fun naver_autoLogin() {
-        var naverToken :String? = ""
+        var naverToken: String? = ""
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(response: NidProfileResponse) {
-                Log.i(TAG, "넘길 네이버 정보 \n" +
-                        "token: ${naverToken} \n" +
-                        " ${response.profile?.name }\n" +
-                        " ${response.profile?.email}\n")
+                Log.i(
+                    TAG, "넘길 네이버 정보 \n" +
+                            "token: ${naverToken} \n" +
+                            " ${response.profile?.name}\n" +
+                            " ${response.profile?.email}\n"
+                )
                 Toast.makeText(this@LoginActivity, "네이버 아이디 로그인 성공!", Toast.LENGTH_SHORT).show()
 
                 val intent = Intent(this@LoginActivity, SignUpDetailActivity::class.java)
@@ -78,12 +88,16 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 //finish()
             }
+
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(this@LoginActivity, "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@LoginActivity, "errorCode: ${errorCode}\n" +
+                            "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT
+                ).show()
             }
+
             override fun onError(errorCode: Int, message: String) {
                 onFailure(errorCode, message)
             }
@@ -100,13 +114,17 @@ class LoginActivity : AppCompatActivity() {
 
                 NidOAuthLogin().callProfileApi(profileCallback)
             }
+
             override fun onFailure(httpStatus: Int, message: String) {
                 Log.i(TAG, "네이버 : 실패")
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code
                 val errorDescription = NaverIdLoginSDK.getLastErrorDescription()
-                Toast.makeText(this@LoginActivity, "errorCode: ${errorCode}\n" +
-                        "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@LoginActivity, "errorCode: ${errorCode}\n" +
+                            "errorDescription: ${errorDescription}", Toast.LENGTH_SHORT
+                ).show()
             }
+
             override fun onError(errorCode: Int, message: String) {
                 Log.i(TAG, "네이버 : 에러")
                 onFailure(errorCode, message)
@@ -114,13 +132,18 @@ class LoginActivity : AppCompatActivity() {
         }
         val tkn = NaverIdLoginSDK.getAccessToken()
         Log.i("네이버) 로그인 토큰 테스트", "${tkn}")
-        if(tkn == null){
+        if (tkn == null) {
             Log.i("네이버) 로그인 기록 없음", "${tkn}")
             return
         } else {
-            Log.i("네이버) 이미 로그인 하셨네요", "${tkn}")
+            Log.i("네이버) 로그인 기록 존재", "${tkn}")
+            //애초에 네이버 로그인을 했었는데 회원가입이 안됐을리가 없잖아?
+            //근데 이메일 정보는 결국 필요..
+
             val intent = Intent(this@LoginActivity, HomeActivity::class.java)
             startActivity(intent)
+            //네이버 로그인 이메일 정보를 가져와야한다..
+            //토큰만으로 가능? => X
         }
     }
 
@@ -233,16 +256,49 @@ class LoginActivity : AppCompatActivity() {
 
         val profileCallback = object : NidProfileCallback<NidProfileResponse> {
             override fun onSuccess(response: NidProfileResponse) {
+                val userEmail = response.profile?.email.toString()
                 Log.i(TAG, "넘길 네이버 정보 \n" +
                         "token: ${naverToken} \n" +
                         " ${response.profile?.name }\n" +
                         " ${response.profile?.email}\n")
                 Toast.makeText(this@LoginActivity, "네이버 아이디 로그인 성공!", Toast.LENGTH_SHORT).show()
 
-                val intent = Intent(this@LoginActivity, SignUpDetailActivity::class.java)
-                intent.putExtra("userEmail", response.profile?.email.toString())
-                startActivity(intent)
-                //finish()
+                Log.i("테스트","소셜 로그인 이전 여부 확인")
+                CoroutineScope(
+                    Dispatchers.IO
+                ).launch {
+                    val result = LoginService().snsLogin(
+                        snsLoginData(
+                            email = response.profile?.email.toString()
+                        )
+                    )
+                    Log.i("테스트",result)
+
+                    if (result == "로그인성공") {
+                        //이미 회원가입 => 바로 메인 페이지 ㄱㄱ
+                        CoroutineScope(
+                            Dispatchers.IO
+                        ).launch {
+                            UserInfo.userEmail = userEmail
+                            getUserInfo()
+
+                            val intent = Intent(this@LoginActivity, HomeActivity::class.java)
+                            startActivity(intent)
+                            //finish()
+                        }
+                    } else {
+                        CoroutineScope(
+                            Dispatchers.Main
+                        ).launch {
+                            //아직 회원가입X => 상세 기록 받기 페이지
+                            val intent = Intent(this@LoginActivity, SignUpDetailActivity::class.java)
+                            intent.putExtra("userEmail", response.profile?.email.toString())
+                            startActivity(intent)
+                            //finish()
+                            Toast.makeText(applicationContext, result, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
             override fun onFailure(httpStatus: Int, message: String) {
                 val errorCode = NaverIdLoginSDK.getLastErrorCode().code

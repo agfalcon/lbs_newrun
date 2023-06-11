@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.widget.Toast
 import kr.ac.kumoh.newrun.databinding.ActivitySignUpIdBinding
 
 class SignUpIDActivity : AppCompatActivity() {
@@ -29,11 +30,15 @@ class SignUpIDActivity : AppCompatActivity() {
         })
 
         binding.btnNext.setOnClickListener {
-            val userId = binding.textInputLogin.text.toString()
-            val intent = Intent(this, SignUpPwActivity::class.java)
-            intent.putExtra("userId", userId)
-            Log.i("ID페이지 : "," ${userId} ")
-            startActivity(intent)
+            if(binding.textInputLogin.text.toString().length <= 4){
+                Toast.makeText(applicationContext, "아이디는 5자 이상입니다!", Toast.LENGTH_SHORT).show()
+            } else {
+                val userId = binding.textInputLogin.text.toString()
+                val intent = Intent(this, SignUpPwActivity::class.java)
+                intent.putExtra("userId", userId)
+                Log.i("ID페이지 : "," ${userId} ")
+                startActivity(intent)
+            }
         }
     }
 }

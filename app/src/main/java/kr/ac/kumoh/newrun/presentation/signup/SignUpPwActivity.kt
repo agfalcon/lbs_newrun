@@ -10,9 +10,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import com.navercorp.nid.NaverIdLoginSDK
+import com.navercorp.nid.oauth.NidOAuthLogin
+import com.navercorp.nid.oauth.OAuthLoginCallback
+import com.navercorp.nid.profile.NidProfileCallback
+import com.navercorp.nid.profile.data.NidProfileResponse
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.R
+import kr.ac.kumoh.newrun.data.model.snsLoginData
+import kr.ac.kumoh.newrun.data.repository.LoginService
 import kr.ac.kumoh.newrun.databinding.ActivitySignUpPwBinding
 
 class SignUpPwActivity : AppCompatActivity() {
@@ -48,18 +59,24 @@ class SignUpPwActivity : AppCompatActivity() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        //<-----------회원가입 완료(다이어로그)--------------->
+        //<-----------회원가입 완료--------------->
         binding.btnSignUpComplete.setOnClickListener {
-            val userId = intent.getStringExtra("userId")
-            val userPw = binding.textInputSignupPw.text.toString()
-            Log.i("Pw페이지 : "," ${userId} ")
-            Log.i("Pw페이지 : "," ${userPw} ")
+            if(binding.textInputSignupPwCheck.text.toString().length <= 7){
+                Toast.makeText(applicationContext, "비밀번호는 8자 이상입니다!", Toast.LENGTH_SHORT).show()
+            } else if(binding.textInputSignupPwCheck.text.toString() != binding.textInputSignupPw.text.toString()){
+                Toast.makeText(applicationContext, "비밀번호가 일치하지 않습니다!", Toast.LENGTH_SHORT).show()
+            } else {
+                val userId = intent.getStringExtra("userId")
+                val userPw = binding.textInputSignupPw.text.toString()
+                Log.i("Pw페이지 : "," ${userId} ")
+                Log.i("Pw페이지 : "," ${userPw} ")
 
-            val intent = Intent(this, SignUpDetailActivity::class.java)
-            intent.putExtra("userId", userId)
-            intent.putExtra("userPw", userPw)
-            startActivity(intent)
-        //showDialog()
+                val intent = Intent(this, SignUpDetailActivity::class.java)
+                intent.putExtra("userId", userId)
+                intent.putExtra("userPw", userPw)
+                startActivity(intent)
+                //showDialog()
+            }
         }
     }
     private fun updateUI(password: String, passwordCheck: String) {
