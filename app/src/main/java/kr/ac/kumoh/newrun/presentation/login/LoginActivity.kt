@@ -27,15 +27,12 @@ import com.navercorp.nid.profile.data.NidProfileResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.repository.UserService
 import kr.ac.kumoh.newrun.databinding.ActivityLoginBinding
 import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.presentation.HomeActivity
 import kr.ac.kumoh.newrun.presentation.signup.SignUpDetailActivity
-import kr.ac.kumoh.newrun.presentation.signup.SignUpIDActivity
-
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -62,7 +59,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
         //테스트용 !!!!--- 나중에 지울거
-        getUserInfo()
         naver_autoLogin()
     }
     
