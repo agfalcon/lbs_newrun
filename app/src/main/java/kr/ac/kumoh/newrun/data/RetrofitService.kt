@@ -9,9 +9,12 @@ import kr.ac.kumoh.newrun.data.api.RankApi
 import kr.ac.kumoh.newrun.data.api.RecordRunningApi
 import kr.ac.kumoh.newrun.data.api.SignUpApi
 import kr.ac.kumoh.newrun.data.api.UserApi
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import java.util.concurrent.TimeUnit
+
 
 object RetrofitService {
     //Node.js와 통신
@@ -27,6 +30,13 @@ object RetrofitService {
     val imageService = retrofit.create(ImageApi::class.java)
 
     //Flask 서버와 통신
+
+    var okHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(30, TimeUnit.MINUTES)
+        .readTimeout(30, TimeUnit.SECONDS)
+        .writeTimeout(30, TimeUnit.SECONDS)
+        .build()
+
     val retrofit2 = Retrofit.Builder().baseUrl("http://10.0.2.2:5000/")
         .addConverterFactory(GsonConverterFactory.create()).build()
     val diffusionService = retrofit2.create(DiffusionApi::class.java)

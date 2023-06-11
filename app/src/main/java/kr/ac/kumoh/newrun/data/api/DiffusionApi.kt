@@ -10,7 +10,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface DiffusionApi {
-    @GET("stable")
+    @POST("stable")
     fun getImage(
         @Body image: StableRequest
     ): Call<DiffusionModel>
