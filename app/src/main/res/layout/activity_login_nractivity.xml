@@ -71,7 +71,7 @@
         android:layout_height="60dp"
         android:background="@drawable/text_box"
         android:hint="비밀번호 입력"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

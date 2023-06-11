@@ -28,33 +28,44 @@ class LoginNRActivity : AppCompatActivity() {
 
         //로그인 버튼
         binding.btnLogin.setOnClickListener {
-            CoroutineScope(
-                Dispatchers.IO
-            ).launch {
-                val result = LoginService().login(
-                    LoginData(
-                        email = binding.etId.text.toString(),
-                        password = binding.etPw.text.toString()
+            if(binding.etId.text.toString().length <= 4){
+                Toast.makeText(applicationContext, "아이디는 5자 이상입니다!", Toast.LENGTH_SHORT).show()
+            } else if(binding.etPw.text.toString().length <= 3) {
+                Toast.makeText(applicationContext, "비밀번호는 4자 이상입니다!", Toast.LENGTH_SHORT).show()
+            } else {
+                CoroutineScope(
+                    Dispatchers.IO
+                ).launch {
+                    val result = LoginService().login(
+                        LoginData(
+                            email = binding.etId.text.toString(),
+                            password = binding.etPw.text.toString()
+                        )
                     )
-                )
 
-                //abcd@naver.com
-                //1234
-                Log.i("테스트", result)
-                Log.i("테스트", binding.etId.text.toString())
-                Log.i("테스트", binding.etPw.text.toString())
+                    //abcd@naver.com
+                    //1234
+                    Log.i("테스트", result)
+                    Log.i("테스트", binding.etId.text.toString())
+                    Log.i("테스트", binding.etPw.text.toString())
 
-                if (result == "로그인성공") {
-                    UserInfo.userEmail = binding.etId.text.toString()
-                    getUserInfo()
+                    if (result == "로그인성공") {
+                        //이미 회원가입 => 바로 메인 페이지 ㄱㄱ
+                        CoroutineScope(
+                            Dispatchers.IO
+                        ).launch {
+                            UserInfo.userEmail = binding.etId.text.toString()
+                            getUserInfo()
 
-                    val intent = Intent(applicationContext, HomeActivity::class.java)
-                    startActivity(intent)
-                } else {
-                    CoroutineScope(
-                        Dispatchers.Main
-                    ).launch {
-                        Toast.makeText(applicationContext, result, Toast.LENGTH_SHORT).show()
+                            val intent = Intent(applicationContext, HomeActivity::class.java)
+                            startActivity(intent)
+                        }
+                    } else {
+                        CoroutineScope(
+                            Dispatchers.Main
+                        ).launch {
+                            Toast.makeText(applicationContext, result, Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
