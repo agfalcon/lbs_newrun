@@ -19,6 +19,8 @@ import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.repository.StableDiffusionService
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.airbnb.lottie.animation.content.Content
 import com.kakao.sdk.common.util.SdkLogLevel
 import kr.ac.kumoh.newrun.data.model.RunData
@@ -26,10 +28,11 @@ import kr.ac.kumoh.newrun.data.repository.ImageService
 import kr.ac.kumoh.newrun.data.repository.MyRecordService
 import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.domain.data.VisitPathData
+import kr.ac.kumoh.newrun.presentation.record.RecordListAdapter
 
 
 class ImageFragment : Fragment() {
-    private lateinit var PathListView: ListView
+    private lateinit var PathListView: RecyclerView
 
     private lateinit var resultData : List<RunData>
 
@@ -49,22 +52,28 @@ class ImageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         CoroutineScope(Dispatchers.IO).launch {
             resultData = MyRecordService().getAllRunData(UserInfo.userEmail)
-            resultData.forEach {
-                val image = ImageService().getImage(it.id)
-                PathList.add(VisitPathData(it.date.split("T")[0], it.runTime, it.distance, image))
-            }
+//            resultData.forEach {
+//                val image = ImageService().getImage(it.id)
+//                PathList.add(VisitPathData(it.date.split("T")[0], it.runTime, it.distance, image))
+//            }
             PathListView = view.findViewById(R.id.PathListView)
-            val PathAdapter = PathAdapter(requireContext(), PathList)
+//            val PathAdapter = PathAdapter(requireContext(), PathList)
             CoroutineScope(Dispatchers.Main).launch {
-                PathListView.adapter = PathAdapter
-                PathAdapter.notifyDataSetChanged()
-                PathListView.setOnItemClickListener { parent, view, position, id ->
-                    val data = resultData[position]
-                    val intent = Intent(requireActivity(), ImageDetailActivity::class.java)
-                    intent.putExtra("resultData", data)
-                    startActivity(intent)
-                }
+                val recordAdapter = RecordListAdapter(resultData)
+                recordAdapter.notifyDataSetChanged()
+                PathListView.adapter = recordAdapter
+                PathListView.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.VERTICAL,false)
+                recordAdapter.setItemClickListener(object: RecordListAdapter.OnItemClickListener{
+                    override fun onClick(v: View, position: Int) {
+                        // 클릭 시 이벤트 작성
+                        val data = resultData[position]
+                        val intent = Intent(requireActivity(), ImageDetailActivity::class.java)
+                        intent.putExtra("resultData", data)
+                        startActivity(intent)
+                    }
+                })
             }
+
         }
 
 
@@ -74,6 +83,7 @@ class ImageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
     }
+
 
 
 

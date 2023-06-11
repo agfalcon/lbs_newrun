@@ -1,5 +1,7 @@
 package kr.ac.kumoh.newrun.presentation.record
 
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
@@ -16,6 +18,7 @@ import kr.ac.kumoh.newrun.R
 import kr.ac.kumoh.newrun.data.model.RunData
 import kr.ac.kumoh.newrun.data.repository.ImageService
 import kr.ac.kumoh.newrun.domain.model.RecordListItem
+import kr.ac.kumoh.newrun.presentation.image.ImageDetailActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
@@ -27,11 +30,23 @@ class RecordListAdapter(val itemList: List<RunData>) :
         return RecordViewHolder(view)
     }
 
+    interface OnItemClickListener {
+        fun onClick(v: View, position: Int)
+    }
+    // (3) 외부에서 클릭 시 이벤트 설정
+    fun setItemClickListener(onItemClickListener: OnItemClickListener) {
+        this.itemClickListener = onItemClickListener
+    }
+
+    private lateinit var itemClickListener : OnItemClickListener
     override fun onBindViewHolder(holder: RecordViewHolder, position: Int) {
         holder.time.text = if(itemList[position].runTime.substring(0,2)=="00") itemList[position].runTime.substring(3) else itemList[position].runTime
         holder.velocity.text = itemList[position].speed.toString() + "km/h"
         holder.distance.text = itemList[position].distance.toString() + "km"
         val date = itemList[position].date.split("T")[0]
+        holder.itemView.setOnClickListener {
+            itemClickListener.onClick(it, position)
+        }
         CoroutineScope(Dispatchers.IO).launch {
             val image = ImageService().getImage(itemList[position].id)
             CoroutineScope(Dispatchers.Main).launch {
@@ -60,7 +75,6 @@ class RecordListAdapter(val itemList: List<RunData>) :
         return itemList.count()
     }
 
-
     inner class RecordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val canvas = itemView.findViewById<ImageView>(R.id.routeCanvas)
         val dDAY = itemView.findViewById<TextView>(R.id.dDayTextView)
@@ -68,6 +82,7 @@ class RecordListAdapter(val itemList: List<RunData>) :
         val distance = itemView.findViewById<TextView>(R.id.distanceTextView)
         val velocity = itemView.findViewById<TextView>(R.id.velocityTextView)
         val time = itemView.findViewById<TextView>(R.id.timeTextView)
+
     }
 
     private fun stringToBitmap(encodedString: String): Bitmap {
