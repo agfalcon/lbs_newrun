@@ -94,16 +94,17 @@ class MyLocationService : Service() {
         Log.d("테스트", "timer 시작")
         RunningData.timer = timer(initialDelay = 0, period = 1000){
             time +=1
-            RunningData.distance += round(getDistance(MyLocation.myLatitude!!, MyLocation.myLongitude!!, RunningData.timeRecord.last().latitude, RunningData.timeRecord.last().longitude)/1000*100)/100
+            RunningData.distance += getDistance(MyLocation.myLatitude!!, MyLocation.myLongitude!!, RunningData.timeRecord.last().latitude, RunningData.timeRecord.last().longitude)
+            Log.d("테스트", "이거 꼭보자 ${RunningData.timeRecord.last().latitude},  ${RunningData.timeRecord.last().longitude} , ${getDistance(MyLocation.myLatitude!!, MyLocation.myLongitude!!, RunningData.timeRecord.last().latitude, RunningData.timeRecord.last().longitude)}")
             RunningData.timeRecord.add(TimeRecordData(time, MyLocation.myLatitude!!, MyLocation.myLongitude!!))
             Log.d("테스트", "시간 : $time")
             Log.d("테스트", "거리 : ${RunningData.distance}")
-            RunningData.velocity = round(RunningData.distance/time*60*60*100)/100
+            RunningData.velocity = round(RunningData.distance*60*60/time*100)/100.0/1000.0
             Log.d("테스트", "속도 : ${RunningData.velocity}")
             Log.d("테스트", "위도, 경도: ${MyLocation.myLatitude}, ${MyLocation.myLongitude}")
             val intent = Intent(ACTION_RUN_UPDATE).apply {
                 putExtra(TIME_DATA_INFO, time)
-                putExtra(DISTANCE_DATA_INFO, RunningData.distance)
+                putExtra(DISTANCE_DATA_INFO, round(RunningData.distance*100)/100.0/1000.0)
                 putExtra(VELOCITY_DATA_INFO, RunningData.velocity)
                 putExtra(TIME_RECORD, RunningData.timeRecord.toTypedArray())
             }
@@ -111,23 +112,23 @@ class MyLocationService : Service() {
         }
     }
 
-//    private fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-//        val dLat = Math.toRadians(lat2 - lat1)
-//        val dLon = Math.toRadians(lon2 - lon1)
-//        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
-//        val c = 2 * asin(sqrt(a))
-//        return (RunningData.R * c)
-//    }
-
-    private  fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        val loc1 = Location("1")
-        loc1.latitude = lat1
-        loc1.longitude = lon1
-        val loc2 = Location("2")
-        loc2.latitude = lat2
-        loc2.longitude = lon2
-        return loc1.distanceTo(loc2).toDouble()
+    private fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = sin(dLat / 2).pow(2.0) + sin(dLon / 2).pow(2.0) * cos(Math.toRadians(lat1)) * cos(Math.toRadians(lat2))
+        val c = 2 * asin(sqrt(a))
+        return (RunningData.R * c)
     }
+
+//    private  fun getDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+//        val loc1 = Location("1")
+//        loc1.latitude = lat1
+//        loc1.longitude = lon1
+//        val loc2 = Location("2")
+//        loc2.latitude = lat2
+//        loc2.longitude = lon2
+//        return loc1.distanceTo(loc2).toDouble()
+//    }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {

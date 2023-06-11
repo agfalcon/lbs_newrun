@@ -79,8 +79,8 @@
         android:textColor="@color/white"
         android:textSize="42sp"
         app:layout_constraintTop_toBottomOf="@id/timeTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/calorieValueTextView"
+        app:layout_constraintStart_toStartOf="@id/timeTextView"
+        app:layout_constraintEnd_toEndOf="@id/timeTextView"
          />
 
     <TextView
@@ -92,8 +92,8 @@
         android:textColor="@color/white"
         android:textSize="42sp"
         app:layout_constraintTop_toTopOf="@id/kmValueTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/kmValueTextView"
+        app:layout_constraintEnd_toEndOf="@id/velocityTextView"
+        app:layout_constraintStart_toStartOf="@id/velocityTextView"
         />
 
     <TextView

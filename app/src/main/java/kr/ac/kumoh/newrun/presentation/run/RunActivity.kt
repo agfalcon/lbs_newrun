@@ -33,7 +33,7 @@ class RunActivity : AppCompatActivity() {
             val velocity = intent.getDoubleExtra(VELOCITY_DATA_INFO, -1.0)
             timeRecord = intent.getParcelableArrayExtra(TIME_RECORD, TimeRecordData::class.java)!!
             if(time==-1 || distance == -1.0 || velocity == -1.0) return
-            binding.kmValueTextView.text = distance.toString()
+            binding.kmValueTextView.text = String.format("%.2f",distance)
             binding.velocityValueTextView.text = String.format("%.2f",velocity)
             binding.timeValueTextView.text = String.format("%02d:%02d", time/60, time%60)
         }

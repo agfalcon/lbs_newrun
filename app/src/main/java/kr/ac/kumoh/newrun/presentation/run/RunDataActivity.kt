@@ -62,6 +62,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
         binding.kmValueTextView.text = distance.toString()
         binding.velocityValueTextView.text = String.format("%.2f",velocity)
         binding.timeValueTextView.text = String.format("%02d:%02d", time!!/60, time!!%60)
+        binding.calorieValueTextView.text = (distance!!*(time!!/60.0/60.0)*900).toString()
 
 
         binding.stopButton.setOnClickListener {
