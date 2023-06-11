@@ -7,7 +7,7 @@ class LoginService {
     suspend fun login(loginData: LoginData) : String {
         val result = RetrofitService.loginService.login(loginData).execute()
         if(result.isSuccessful){
-            if(result.body()?.message=="")
+            if(result.body()?.message==null)
                 return result.body()?.error ?: "Unknown error"
             else
                 return result.body()?.message ?: "Unknown error"

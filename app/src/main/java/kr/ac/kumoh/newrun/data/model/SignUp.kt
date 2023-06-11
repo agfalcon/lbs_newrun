@@ -6,7 +6,7 @@ data class SignUp(
     @SerializedName("email")
     val email : String,
     @SerializedName("username")
-    val userMame : String,
+    val userName : String,
     @SerializedName("nickname")
     val nickName : String,
     @SerializedName("password")
