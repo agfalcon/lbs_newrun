@@ -1,7 +1,10 @@
 package kr.ac.kumoh.newrun.data.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class RunData(
     @SerializedName("id")
     val id: Int,
@@ -17,5 +20,4 @@ data class RunData(
     val route: List<LocationData>,
     @SerializedName("user_id")
     val userId: Int,
-
-)
+) : Parcelable
