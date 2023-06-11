@@ -8,7 +8,7 @@ class ImageService {
     suspend fun getImage(id: Int) : String{
         val image = RetrofitService.imageService.getImage(ImageId(id)).execute()
         if(image.isSuccessful){
-            return image.body() ?: "에러"
+            return image.body()?.image ?: "에러"
         }
         return "에러"
     }

@@ -1,5 +1,6 @@
 package kr.ac.kumoh.newrun.data
 
+import com.google.gson.GsonBuilder
 import kr.ac.kumoh.newrun.data.api.DiffusionApi
 import kr.ac.kumoh.newrun.data.api.ImageApi
 import kr.ac.kumoh.newrun.data.api.LoginApi
@@ -14,8 +15,9 @@ import retrofit2.create
 
 object RetrofitService {
     //Node.js와 통신
+    val gson = GsonBuilder().setLenient().create()
     val retrofit = Retrofit.Builder().baseUrl("https://newrun-lbs.run.goorm.site/")
-        .addConverterFactory(GsonConverterFactory.create()).build()
+        .addConverterFactory(GsonConverterFactory.create(gson)).build()
     val recordRunningService = retrofit.create(RecordRunningApi::class.java)
     val myRecordService = retrofit.create(MyRecordApi::class.java)
     val userService = retrofit.create(UserApi::class.java)

@@ -47,34 +47,32 @@ class ImageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         CoroutineScope(Dispatchers.IO).launch {
-            val result = MyRecordService().getAllRunData(UserInfo.userEmail)
-            result.forEach {
-                PathList.add(VisitPathData(it.date, it.runTime, "sample"))
+            resultData = MyRecordService().getAllRunData(UserInfo.userEmail)
+            resultData.forEach {
+                PathList.add(VisitPathData(it.date.split("T")[0], it.runTime, it.distance, "sample"))
             }
             PathListView = view.findViewById(R.id.PathListView)
             val PathAdapter = PathAdapter(requireContext(), PathList)
-            PathListView.adapter = PathAdapter
-            PathAdapter.notifyDataSetChanged()
+            CoroutineScope(Dispatchers.Main).launch {
+                PathListView.adapter = PathAdapter
+                PathAdapter.notifyDataSetChanged()
+                PathListView.setOnItemClickListener { parent, view, position, id ->
+                    val data = resultData[position]
+                    val intent = Intent(requireActivity(), ImageDetailActivity::class.java)
+                    intent.putExtra("resultData", data)
+                    startActivity(intent)
+                }
+            }
         }
 
 
 
-        PathListView.setOnItemClickListener { parent, view, position, id ->
-            val data = resultData[position]
-            val intent = Intent(requireActivity(), ImageDetailActivity::class.java)
-            intent.putExtra("resultData", data)
-            startActivity(intent)
-        }
+
 
         super.onViewCreated(view, savedInstanceState)
 
     }
 
-    private fun stringToBitmap(encodedString: String): Bitmap {
 
-        val encodeByte = Base64.decode(encodedString, Base64.DEFAULT)
-
-        return BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.size)
-    }
 
 }

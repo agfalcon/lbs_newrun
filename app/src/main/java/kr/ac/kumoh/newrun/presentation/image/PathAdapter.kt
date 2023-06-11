@@ -17,9 +17,10 @@ class PathAdapter(val context: Context, val PathList: ArrayList<VisitPathData>) 
         val view: View = LayoutInflater.from(context).inflate(R.layout.path_layout, null)
 
         /* 위에서 생성된 view를 res-layout-main_lv_item.xml 파일의 각 View와 연결하는 과정이다. */
-        val pathImg = view.findViewById<ImageView>(R.id.pathImg)
+        //val pathImg = view.findViewById<ImageView>(R.id.pathImg)
         val pathDate = view.findViewById<TextView>(R.id.pathDate)
         val pathTime = view.findViewById<TextView>(R.id.pathTime)
+        val pathDistance = view.findViewById<TextView>(R.id.distanceTextView)
 
         /* ArrayList<Dog>의 변수 dog의 이미지와 데이터를 ImageView와 TextView에 담는다. */
         val path = PathList[position]
@@ -27,11 +28,11 @@ class PathAdapter(val context: Context, val PathList: ArrayList<VisitPathData>) 
 //            0 -> AppCompatResources.getDrawable(context, R.drawable.gold_medal)
 //
 //        val resource = context.resources.getIdentifier(path.photo, "drawable", context.packageName)
-        val imageRes = AppCompatResources.getDrawable(context, R.drawable.gold_medal)
-        pathImg.setImageDrawable(imageRes)
+        //val imageRes = AppCompatResources.getDrawable(context, R.drawable.gold_medal)
+        //pathImg.setImageDrawable(imageRes)
         pathDate.text = path.date
         pathTime.text = path.time
-
+        pathDistance.text = path.distance.toString()
         return view
     }
 
