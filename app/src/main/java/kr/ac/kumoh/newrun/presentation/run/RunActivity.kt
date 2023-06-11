@@ -35,7 +35,7 @@ class RunActivity : AppCompatActivity() {
             if(time==-1 || distance == -1.0 || velocity == -1.0) return
             binding.kmValueTextView.text = String.format("%.2f",distance)
             binding.velocityValueTextView.text = String.format("%.2f",velocity)
-            binding.timeValueTextView.text = String.format("%02d:%02d", time/60, time%60)
+            binding.timeValueTextView.text = String.format("%02d:%02d", time!!/60%60, time!!%60)
         }
     }
 

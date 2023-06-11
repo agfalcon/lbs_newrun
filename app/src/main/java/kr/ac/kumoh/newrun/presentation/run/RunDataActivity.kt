@@ -61,7 +61,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
 
         binding.kmValueTextView.text = distance.toString()
         binding.velocityValueTextView.text = String.format("%.2f",velocity)
-        binding.timeValueTextView.text = String.format("%02d:%02d", time!!/60, time!!%60)
+        binding.timeValueTextView.text = String.format("%02d:%02d", time!!/60%60, time!!%60)
         binding.calorieValueTextView.text = (distance!!*(time!!/60.0/60.0)*900).toString()
 
 
@@ -71,7 +71,7 @@ class RunDataActivity : AppCompatActivity(), OnMapReadyCallback {
             RunActivity.activity?.finish()
             Log.d("테스트" , "보내는 값 : ${RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d", time!!/60, time!!%60), userEmail = UserInfo.userEmail, route = record)}")
             CoroutineScope(Dispatchers.IO).launch{
-                val message= RecordRunningService().recordRunning(RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d", time!!/60, time!!%60), userEmail = UserInfo.userEmail, route = record))
+                val message= RecordRunningService().recordRunning(RunResultRequest(distance = distance.toString(), speed = velocity.toString(), run_time = String.format("%02d:%02d:%02d", time!!/60/60, time!!/60%60, time!!%60), userEmail = UserInfo.userEmail, route = record))
                 Log.d("테스트", "메시지 반환값 : ${message.message}")
             }
             binding.playButton.visibility = View.GONE

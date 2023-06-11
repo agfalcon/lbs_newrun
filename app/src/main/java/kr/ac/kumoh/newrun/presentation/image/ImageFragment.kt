@@ -22,6 +22,7 @@ import androidx.appcompat.app.AlertDialog
 import com.airbnb.lottie.animation.content.Content
 import com.kakao.sdk.common.util.SdkLogLevel
 import kr.ac.kumoh.newrun.data.model.RunData
+import kr.ac.kumoh.newrun.data.repository.ImageService
 import kr.ac.kumoh.newrun.data.repository.MyRecordService
 import kr.ac.kumoh.newrun.domain.data.UserInfo
 import kr.ac.kumoh.newrun.domain.data.VisitPathData
@@ -49,7 +50,8 @@ class ImageFragment : Fragment() {
         CoroutineScope(Dispatchers.IO).launch {
             resultData = MyRecordService().getAllRunData(UserInfo.userEmail)
             resultData.forEach {
-                PathList.add(VisitPathData(it.date.split("T")[0], it.runTime, it.distance, "sample"))
+                val image = ImageService().getImage(it.id)
+                PathList.add(VisitPathData(it.date.split("T")[0], it.runTime, it.distance, image))
             }
             PathListView = view.findViewById(R.id.PathListView)
             val PathAdapter = PathAdapter(requireContext(), PathList)
